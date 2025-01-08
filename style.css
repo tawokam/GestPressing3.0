@@ -1,0 +1,778 @@
+/*gestsec*/
+#secur{
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    z-index: 6000;
+    background: black;
+    text-align: center;
+    color:white;
+    display: none;
+}
+body{
+margin: 0%;
+padding: 0%;
+overflow: hidden;
+background:rgb(255, 255, 255);
+}#nomlogic{
+    font-size: 25px;
+    font-weight: bolder;
+    color: white;
+    font-style: italic;
+    font-family: Arial, Helvetica, sans-serif;
+}
+#menu{
+    width: 100vw;
+    height: 100vh;
+    margin: 0%;
+    padding: 0%;
+    border-collapse: collapse;
+}#menugauche{
+    background:#9da4e5cc;color: black;
+    width: 250px;
+    min-width: 250px;
+    background:-webkit-linear-gradient(top,rgb(15, 122, 151),#183b52);transition: 1s;
+
+}#tabimbriquer{
+    margin: 0%;
+    border-collapse: collapse;
+    margin-top: 0%;
+    width: 100%;
+    height: 100vh;
+    color: white;
+}.tdmenu:hover{
+    transition: 1s;
+    text-align: center;
+    border-radius: 0px;
+    color:rgb(26, 219, 61);
+}#tabbordmenu{
+    color:rgb(26, 219, 61);
+    text-align: center;
+}
+.tdmenu,.tdmenunom{
+    cursor: pointer;
+    transition: 1s;
+    vertical-align: middle;
+    border: 0px;
+    border-radius: 7px;
+    font-size: 14px;
+}.tdmenunom{
+    text-align: center;
+    cursor:default;
+}
+.menuicon{
+    vertical-align: middle;
+    width: 30px;
+}
+#blockconnexion{
+        position: fixed;
+        width: 100vw;
+        height: 100vh;
+        background: rgba(44, 42, 42, 0.846);
+        z-index:1000;
+        top: 0px;
+        text-align: center;
+        border: 0px;
+        justify-content: space-around;
+        align-items: center;
+        display: flex;
+    }#tabconex{
+        background: white;
+        width: 500px;
+        text-align: center;
+        box-shadow: 0.5px 2px 5px 10px rgba(26, 25, 25, 0.068);
+        border-radius: 5px;
+        background:linear-gradient(rgba(0, 0, 0, 0.514),rgba(0, 0, 0, 0.685)),url('img/bgpressing2.jfif');padding:20px;border-radius:20px
+    }#fildsetconex{
+        margin: 25px 15px 13px 10px;
+        
+    }#blocform{
+        text-align: center;
+        margin: auto;
+        color: green;
+        width: 100%;
+        background:rgb(255, 255, 255);
+        border-radius:10px;
+    }#legendconexion{
+        font-size: 30px;
+        color: gray;
+        padding: 0px 20px;
+    }.champconnexion{
+        width: 95%;
+        height: 30px;
+        margin: auto;
+        border-radius: 5px;
+        font-size: 20px;
+        background: white;
+        border: 1px solid gray;
+        
+    }.inputconnect2{
+        border: 0px;
+        vertical-align: middle;
+        width: 90%;
+    }.inputconnect{
+        border: 0px;
+        vertical-align: middle;
+        width: 96%;
+    }#connexion{
+        margin-top: 2%;
+        background: blue;
+        color: white;
+        width: 95%;
+        border: 0px;
+        height: 45px;
+  
+    }
+    #imgmdp{
+        vertical-align: middle;
+    }#formnewcompt,#blockpersonnel,#blockFichAllpersonnel{
+        width: 50%;
+        background: white;
+        box-shadow: 0.5px 0.5px 10px 10px rgba(128, 128, 128, 0.096);
+        padding: 0px 7px 4px 7px;
+        display: none;
+        position:fixed;
+        top: 5%;
+        z-index: 100;
+    }#formmodifdep,#formmodifclotcaisse,#formnewclient,#formnewtypvet,#formnewtypdep,#formnewdep,#formnewcarte,#formrecharcarte,#formnewtypver,#formnewverse,#smsvetsortnow, #smsretraitDepasse, #formnsendsmsCl{
+        position:fixed;
+        width: 30%;
+        background: white;
+        box-shadow: 0.5px 0.5px 10px 10px rgba(128, 128, 128, 0.096);
+        padding: 0px 7px 4px 7px;
+        display: none;
+        top: 5%;
+        z-index: 100;
+    }#formmodifdep,#formmodiftypversem,#formmodifversem,#formmodifdepot,#formmodifclient,#formmodiftypvet,#formmodiftypdep{
+        position:fixed;
+        width: 30%;
+        background: white;
+        box-shadow: 0.5px 0.5px 10px 10px rgba(128, 128, 128, 0.096);
+        padding: 0px 7px 4px 7px;
+        display: none;
+        top: 10%;
+        z-index: 100;
+    }#formmodifclotcais{
+        position:fixed;
+        width: 30%;
+        background: white;
+        box-shadow: 0.5px 0.5px 10px 10px rgba(128, 128, 128, 0.096);
+        padding: 0px 7px 4px 7px;
+        display: none;
+        top: 10%;
+        z-index: 100;
+    }
+    #formmeilleurcl{
+        position:fixed;
+        width: 50%;
+        background: white;
+        box-shadow: 0.5px 0.5px 10px 10px rgba(128, 128, 128, 0.096);
+        padding: 0px 7px 4px 7px;
+        display: block;
+        top: 5%;
+        z-index: 100;
+        text-align: center;
+    }#facture1cl{
+        position:fixed;
+        width: 70%;
+        background: white;
+        box-shadow: 0.5px 0.5px 10px 10px rgba(128, 128, 128, 0.096);
+        padding: 0px 7px 4px 7px;
+        display: none;
+        top: 7%;
+        z-index: 100;
+    }
+    .fildsetnewcompt{
+        text-align: center;
+    }#legendnewcomp{
+        text-align: center;
+        font-size: 30px;
+        color: gray;
+        padding: 0px 30px;
+    }.inputnewcompt{
+        width: 99%;
+        height: 25px;
+        margin: 1% 0%;
+    }.selectnewcompt{
+        width: 101%;
+        height: 30px;
+        margin: 1% 0%;
+    }
+    .inputnewcarte{
+        width: 95%;
+        height: 25px;
+        margin: 1% 0%;
+        border-radius: 7px;
+        border: 0.2px solid gray;
+    }
+    #tabnewcomp,#tabfact1cl{
+        width: 100%;
+    }#tabfact1cl{
+        border-collapse: collapse;
+        text-align: center;
+        height: 40vh;
+        overflow: auto;
+    }
+    #blockinfo{
+        justify-content: space-around;
+        align-items: center;
+        display: flex;
+        min-width: 500px;
+        overflow: auto;
+    }#tabaffichcomp{
+        width: 90%;
+        text-align: center;
+        border: 1px solid blue;
+       border-collapse: collapse;
+       margin: auto;
+    }#tabaffichcomp{
+        width: 100%;
+        text-align: center;
+        border: 1px solid blue;
+       border-collapse: collapse;
+       margin: auto;
+    }
+    #affichecompt{
+        width: 100%;
+        text-align: center;
+        display: none;
+        overflow: auto; 
+        
+    }.thaffichcompt{
+        border: 1px solid blue;
+        background: blue;
+        color: white;
+    }.modifcompt{
+        background: blue;
+        color: white;
+    }.supcompt{
+        background: red;
+        color: white;
+        cursor: pointer;
+    }.supcompts{
+        color: gray;
+    }
+    .tdaffihcomp,.tdaffihcmd{
+        border: 1px solid blue;
+    }.tdaffihcmd{cursor:pointer;}.tdaffihclcart{cursor: pointer;border: 1px solid blue;}.tdaffihclcart:hover{background: blue;color: white;border:1px solid blue}
+    #btnajoutcomp{
+        background: blue;
+        color: white;
+        margin-bottom: 1%;
+        padding: 10px 5px;
+        border: 0px;
+        border-radius: 5px;
+    }.tdaffihcompte{
+        border: 1px solid blue;
+        cursor: pointer;
+        color: white;
+        background: blue;
+
+    }#btnmodifcaisseclot,#btnnewcompt,#btnnewverA,#btntypvet,#btnnewclient,#btntypdep,#btnenregdep,#btnnewcarte,#btnrecharcarte,#btnmodifvet,#btnverse,#btnmodifclient{
+        width: 100%;
+        padding: 10px 0px;
+        background: blue;
+        color: white;
+        border: 0px;
+        border-radius: 5px;
+    }
+    #ferme{
+        background: blue;
+        color: white;
+        text-align: center;
+        width: 10%;
+        margin-left: 90%;
+        padding: 5px;
+        cursor: pointer;
+    }#fermer{
+        background: blue;
+        color: white;
+        text-align: center;
+        width: 5%;
+        margin-left: 94%;
+        padding: 5px;
+        cursor: pointer;
+    }
+    #blockalert{
+        background: rgba(93, 90, 90, 0.782);
+        height: 100vh;
+        position:absolute;
+        z-index: 500;
+        top: 0%;
+        width: 100%;
+        display:none;
+        /*code css permettant de centrer une boite horizontalement et verticalement*/
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+    }#blockannonce{
+        box-shadow: 0.5px 0.5px 10px 10px rgba(128, 128, 128, 0.096);
+        position:fixed;
+        z-index:501;
+        background: white;
+        width:30%;
+        height: 30vh;
+        color: gray;
+        left: 35%;
+        top: 40vh;
+    }#td1annonce{
+        color: gray;
+        font-size: 30px;
+        font-weight: bold;
+    }#td2annonce{
+        margin: auto;
+    
+    }#messagealert{
+        width: 97%;
+        margin: auto;
+        resize: none;
+        font-size: 15px;
+        border: 0px;
+    
+    }#btnok{
+        background: blue;
+        color: white;
+        width: 20%;
+        padding: 7px 0px;
+        margin-right: 5%;
+        border: 0px;
+    }#td3annonce{
+        text-align: right;
+    }#gestsortaujd,#gestclient,#gestvetement,#gestdepense,#gestdette,#gestcaisse,#gestfidelitecl,#gestersement,#gestsms,#operationEffect{
+        width: 100%;
+        text-align: center;
+        display: none;
+    }#gestdashbord{
+        width: 100%;
+        text-align: center;
+        display: block;  
+        
+    }
+    #rapportlistverse,#rapportlistcartef,#rapportlistcloturcaus,#rapportlistvetdepot,#rapportlistvetsort,#rapportlistdepense,#rapportlistfacture,#rapportlistdett,#rapportlistargantcli,#rapportlistargantvet{
+        width: 100%;
+        text-align: center;
+        display:none;color: rgba(128, 128, 128, 0.356);
+       /*  margin-top: 3%; */
+    }
+    #menuclient{
+        width: 100%;
+        background: black;
+        margin: auto;
+       padding: 5px 0px;
+       color: white;
+       border-bottom: 1px solid white;
+    }#toutclient,#toutsms{
+        width: 98%;
+        margin: auto;
+        margin-top: 2%;
+        height: 85vh;
+        overflow: auto;
+    }#depotvet{
+        width: 98%;
+        margin: auto;
+        margin-top: 2%;
+    }
+    #sortievet,#regledett,#blockclokcaisse,#affichtypevet{
+        width: 50%;
+        margin: auto;
+        text-align: center;
+        display: none;
+        position: fixed;
+        z-index: 20;
+        background: white;
+        box-shadow: 0.5px 0.5px 10px 10px rgba(128, 128, 128, 0.096);
+        top: 5%;
+        left:30%;
+    }
+    .btngestclient{
+        margin: 0% 3%;
+        background: blue;
+        color: white;
+        padding: 7px;
+        border-radius: 2px;
+        border: 2px solid white;
+    }#seachclient{
+        padding: 5px;
+        border-radius: 5px;
+        border: 0px;
+    }#tabaffichclient{
+        border: 1px solid blue;
+        width: 100%;
+        border-collapse: collapse;
+    }#tabclientcmd{
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 0%;
+    }
+    #modifclotcais,#modifversem,#modiftypversem,#modifdep,#modiftypdep,#modiftypvetsucces,#resultmodifclotcaisse,#resultnewclient,#resultnewcompt,#resulttypvet,#resulttypdep,#resultdep,#resulttypverse,#resultverse,#modifclientsucces{
+        text-align: center;
+        color: blue;
+        font-weight: bold;
+    }#tabnewcomande,#tabnewsortie{
+        width: 100%;
+        border: 1px solid gray;
+        border-radius: 6px;
+         border-collapse: collapse;
+    }.inputcomande{
+        width: 80%;
+        height: 35px;
+        border-radius: 8px;
+        border: 0.5px solid gray;
+        margin: 1% 0%;
+    }.selectcomande{
+        width: 81%;
+        height: 35px;
+        border-radius: 5px;
+        border: 0.5px solid gray;
+    }
+    .btnvalidcomande{
+        width: 40%;
+        background: blue;
+        color: white;
+        padding: 7px 0px;
+        border-radius: 7px;
+        border: 0px;
+        font-weight: bold;
+    }.btnvalidrecherche{
+       width: 90%;
+        background: blue;
+        color: white;
+        padding: 7px 0px;
+        border-radius: 7px;
+        border: 0px;
+        font-weight: bold;
+    }
+    #listeclientcmd,#listeclientsort{
+        width: 100%;
+        height: 30vh;
+        overflow: auto;
+    }#tdclientcmd,#tdclientsort{
+        width: 40%;
+        border: 1px solid gray;
+        vertical-align: top;
+
+    }#listecarte{
+        width: 100%;
+        height: 80vh;
+        overflow: auto;
+    }#zonegraphdashbord,#listestock,#listeversearapport,#listeversea,#listevetentre,#listecloturecais,#listevetsort,#listedepenserap,#listefacturerap,#listecartefrap,#listedetterap,#listechiffrecl,#listechiffrevet{
+        width: 100%;
+        height: 95vh;
+        overflow: auto;
+       /*  padding-bottom: 50px; */
+    }#zonegraphdashbord{
+        display: flex;
+        flex-wrap: wrap;      
+    }
+    #menurapport{
+        position: fixed;
+        top: 0%;
+        height: 100vh;
+        border: 0px;
+        background-color: black;
+        width: 250px;
+        display: none;
+    }
+    #affichvet,#affichvetsort,#affichfactdet,#listetypevet{
+        vertical-align: top;
+        border: 1px solid gray;
+        width: 100%;
+        height: 40vh;
+        overflow:auto;
+    }#cherchecliencmd,#cherchecliensort{
+        width: 80%;
+        padding: 7px;
+        margin: 1%;
+        border-radius: 5px;
+        border: 0.5px solid gray;
+    }#smsFormCmd,#smsFormsort{color: blue;text-align: center;}
+    #btnfinsaissi{
+        display: none;
+    }#tdfin{
+        text-align: center;   
+    }#btngerfact{
+        background: blue;
+        color: white;
+        border: 1px solid white;
+    }#avancefact{
+        width: 10%;
+    }#blockfacture{
+        z-index: 2000;
+        top: 6%;
+        left: 25%;
+        background: white;
+        position: fixed;
+        text-align: center;
+        box-shadow: 0.5px 0.5px 10px 10px rgba(128, 128, 128, 0.096);
+        border: 0px;
+        display: none;
+        width: 60%;
+        height: 70vh;
+    }#tabtelfact{
+        width: 80%;
+        text-align: center;
+        margin: auto;
+
+    }#infofact{
+        min-height: 200px;
+       /*  overflow: auto; */
+    }#btnimprime{
+        padding: 5px 15px;
+        background: blue;
+        color: white;
+        border: 0px;
+        margin: 1%;
+        border-radius: 5px;
+    }#blockimprim{
+        text-align: center;
+    }.deteRegle{
+        padding: 5px 10px;
+        background: blue;
+        color: white;
+        border: 1px solid white;
+        border-radius: 7px;
+        font-weight: bold;
+        font-style: italic;
+    }#etatFctDR{
+        color: red;
+        text-align: center;
+    }#listeDepense,#listedep,#listedettecour,#listedettregle,#listeetatcais,#listversement,#listeversement,#listedepregle{
+        height: 75vh;
+        overflow: auto;
+        border-right: 1px solid gray;
+    }#lisoperation
+    {
+        height: 85vh;
+        overflow: auto;
+        border-right: 1px solid gray;
+    }
+    #trdepdate{
+        background: black;
+        color: white;
+    }.depdate{
+        width:25%;
+        margin: 0.5%;
+        border-radius: 7px;
+        height: 25px;
+    }#tdlisteDepense{
+        width: 25%;
+    }#tdlisteDette{
+        width: 50%;
+    }
+    #da{
+        text-align: center;
+        color: gray;
+        font-size: 12px;
+    }#etatFctdette{color: blue;text-align: center;}
+    #tousom{
+        width: 100%;
+        text-align: center;
+        font-size: 25px;
+    }#smsclot{
+        color: blue;
+        font-style: italic;
+        font-weight: bold;
+    }#choixclcart, #choixclsms{
+        height: 30vh;
+        overflow: auto;
+        border: 1px solid gray;
+        text-align: center;
+    }#smsnewcart,#smsmodifcart{
+        text-align: center;
+        color: green;
+    }
+
+    /*application des style sur les carte*/
+    .borcarte{
+        background: white;
+        color: green;
+        width: 350px;
+        border: 0px;
+        margin: 15px;
+        height: 200px;
+        border-radius: 8px;
+        font-weight: bold;
+        box-shadow: 0.5px 0.5px 2px 4px rgba(128, 128, 128, 0.096);
+        cursor: pointer;
+        padding: 10px;
+    }#blockcarte{
+        display:flex;
+         flex-wrap: wrap;
+         float: left;
+         
+    }#tabcarte{
+        width: 100%;
+    }#nomcarte{
+        font-weight: bolder;
+        font-size: italic;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 40px;
+        text-align: left;
+        padding: 7px;
+        vertical-align: bottom;
+    }.contable{
+        text-align: left;
+
+    }#imguser{
+        width: 90px;
+        vertical-align: bottom;
+        text-align: left;
+    }.contab{
+        text-align: right;
+    }#gernomlong{
+        
+        height: 60px;
+        overflow: hidden;
+    }
+    /* fin du travaille sur les cartes*/
+    .inputseaclcart{
+        width: 70%;
+        height: 27px;
+        border-radius: 7px;
+        border: 0px;
+    }#nomclrechar{
+        text-align: center;
+        font-size: 25px;
+        font-weight:bold;
+        color: green;
+        font-style: italic;
+    }#blockaffichMcl{
+        height: 70vh;
+        overflow: auto;
+        width: 100%;
+        border: 0.5px solid gray;
+    }#gestrapport{
+        text-align: center;
+        font-weight: bold;
+        font-style: italic;
+        font-family: Arial, Helvetica, sans-serif;
+    }#fermerapport{
+        background: blue;
+        padding: 5px 7px;
+        border-radius: 7px;
+        cursor: pointer;
+
+}#avancedette{
+    width: 30%;
+}#cherchecliencmd{
+    width: 40%;
+}.supprimeinfo{
+border:1px solid blue;
+background: red;
+color: white;
+font-style: italic;
+font-weight: bold;
+cursor: pointer;
+}.modifinfo{
+border:1px solid white;
+background: blue;
+color: white;
+font-style: italic;
+font-weight: bold;
+cursor: pointer;
+}
+.detailfact{
+    border: 1px solid blue;
+    color: blue;
+    font-weight: bold;
+    cursor: pointer;
+
+}.fact1clt{
+    color: blue;
+    padding: 0px 5px;
+    font-size: 20px;
+}#imprimfact1cl{
+    background: blue;
+    color: white;
+    width: 10%;
+    margin: auto;
+    text-align: center;
+    padding: 7px;
+    border-radius: 7px;
+    margin-top: 2%;
+    cursor: pointer;
+}#actualiselisttypevet{
+    background: linear-gradient(rgb(21, 21, 141),blue,rgb(16, 16, 165));
+    color:white;
+    padding: 5px 0px;
+    cursor: pointer;
+}.inputcomand{
+    width: 38%;
+    margin: 0% 1%;
+    height: 25px;
+    border:1px solid gray;
+    border-radius: 6px;
+}.modifcomp{
+    background: blue;
+    color:white;
+    border-right: 1px solid white;
+    cursor: pointer;
+}#affichnomvet{
+    text-align: center;
+    font-size: 25px;
+    color: gray;
+}#modifsucces{
+    text-align: center;
+    color: blue;
+    font-weight: bold;
+}#keltypeversea,#keltypeversearapport,.typePressing{
+    padding: 7px;
+    border: 2px solid white;
+    background: blue;
+    color: white;
+    border-radius: 4px;
+}#toutuser{
+    width: 98%;
+    margin: auto;
+    margin-top: 2%;
+    height: 85vh;
+    overflow: auto;
+}#jourrste{
+    text-align: center;
+    font-weight: bolder;
+    font-style: italic;
+}.dash{
+    font-weight: bolder;
+    font-style: italic;
+    font-size: 25px;
+}#blockDossierUser{
+    background:url('img/logo.jpg');
+    background-size:cover;
+}
+#contentElemetGestPersonnel{
+    max-height: 70vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/*--------------------------------*/
+/*--- Travail sur le responsive des formulaire en position fixed ---*/
+@media (max-width: 992px) {
+#formmodifdepot,#formrecharcarte,#formnewcarte,#formmodiftypversem,#formmodifversem,#formnewtypver,#formnewverse,#formnewcompt,#formnewclient,#formmodifclient,#formmodiftypvet,#formnewtypdep,#formnewdep,#formmodiftypdep,#formmodifdep,#formnsendsmsCl,#blockpersonnel,#blockFichAllpersonnel {
+      width: 70%;
+      left:20%;
+    }
+    #facture1cl,#regledett{
+        width: 90%;
+        left:5%;
+    }
+    #blockfacture{       
+        left: 3%;
+    }
+    #formnewtypvet,#affichtypevet,#blockclokcaisse{
+        width: 60%;
+        left:10%;
+    }#sortievet{
+        width: 80%;
+        left: 6%;
+    }
+    #tabconex{
+        width: 60%;
+        left: 5%;
+    }#blockannonce{
+        width: 60%;
+        left:10%;
+    }
+
+    
+  }
