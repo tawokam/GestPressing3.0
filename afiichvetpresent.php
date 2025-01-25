@@ -1,7 +1,7 @@
 <?php
 require('connect.php');
 $datedepotvetstock = $_GET['datedepotvetstock'];
-$pressing = $_GET['pressing'];
+$pressing          = $_GET['pressing'];
 
 if($pressing == 'all')
 {

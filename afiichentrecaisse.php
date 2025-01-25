@@ -1,9 +1,10 @@
 <?php
 require('connect.php');
-$dateclot = $_GET['dateclot'];
-$datefinclot = $_GET['datefinclot'];
-$pressing = $_GET['pressing'];
-$montanttotal=0;
+$dateclot     = $_GET['dateclot'];
+$datefinclot  = $_GET['datefinclot'];
+$pressing     = $_GET['pressing'];
+$mont         = $_GET['mont'];
+$montanttotal = 0;
 
 if($pressing == 'all')
 {
@@ -30,9 +31,19 @@ if($dateclot == '' || $datefinclot == ''){
      <tr><th>N°</th><th>Id versemen</th><th>N° Facture</th><th>Montant versé</th><th>Date de versement</th></tr>
      </thead>';
      if ($pressing == 'all') {
-        $se="SELECT * FROM versement where code <> 0";
+        if($mont != ''){
+            $se="SELECT * FROM versement where code <> 0 AND montantv < '$mont'";
+        }else{
+            $se="SELECT * FROM versement where code <> 0";
+        }
+        
     }else {
-        $se="SELECT * FROM versement where code <> 0 AND agence='$pressing'";
+        if($mont != ''){
+            $se="SELECT * FROM versement where code <> 0 AND agence='$pressing' AND montantv < '$mont'";
+        }else{
+            $se="SELECT * FROM versement where code <> 0 AND agence='$pressing'";
+        }
+        
     }
 
 if($sel=$connec->query($se)){
@@ -48,9 +59,19 @@ if($sel=$connec->query($se)){
     }
 }
 if ($pressing == 'all') {
-    $co="SELECT *,sum(montantv) as montant FROM versement where code <> 0";
+    if($mont != ''){
+        $co="SELECT *,sum(montantv) as montant FROM versement where code <> 0 AND montantv < '$mont'";
+    }else{
+        $co="SELECT *,sum(montantv) as montant FROM versement where code <> 0";
+    }
+    
 }else {
-    $co="SELECT *,sum(montantv) as montant FROM versement where code <> 0 AND agence='$pressing'";
+    if($mont != ''){
+        $co="SELECT *,sum(montantv) as montant FROM versement where code <> 0 AND agence='$pressing' AND montantv < '$mont'";
+    }else{
+        $co="SELECT *,sum(montantv) as montant FROM versement where code <> 0 AND agence='$pressing'";
+    }
+    
 }
 
 if($com=$connec->query($co)){
@@ -67,9 +88,18 @@ echo '<table class="table table-succes table-bordered table-striped table-hover"
  <tr><th>N°</th><th>Id versemen</th><th>N° Facture</th><th>Montant versé</th><th>Date de versement</th></tr>
  </thead>'; 
  if ($pressing == 'all') {
-    $se="SELECT * FROM versement where code <> 0 AND date_verse BETWEEN '$dateclot' AND '$datefinclot'";
+    if($mont != ''){
+        $se="SELECT * FROM versement where code <> 0 AND date_verse BETWEEN '$dateclot' AND '$datefinclot' AND montantv < '$mont'";
+    }else{
+        $se="SELECT * FROM versement where code <> 0 AND date_verse BETWEEN '$dateclot' AND '$datefinclot'";
+    }
+    
 }else {
-    $se="SELECT * FROM versement where code <> 0 AND date_verse BETWEEN '$dateclot' AND '$datefinclot' AND agence='$pressing'";
+    if($mont != ''){
+        $se="SELECT * FROM versement where code <> 0 AND date_verse BETWEEN '$dateclot' AND '$datefinclot' AND agence='$pressing' AND montantv < '$mont'";
+    }else{
+        $se="SELECT * FROM versement where code <> 0 AND date_verse BETWEEN '$dateclot' AND '$datefinclot' AND agence='$pressing'";
+    }   
 } 
 
 if($sel=$connec->query($se)){
@@ -85,9 +115,19 @@ if($sel=$connec->query($se)){
     }
 }
 if ($pressing == 'all') {
-    $co="SELECT *,sum(montantv) as montant FROM versement where code <> 0 AND date_verse BETWEEN '$dateclot' AND '$datefinclot'";
+    if($mont != ''){
+        $co="SELECT *,sum(montantv) as montant FROM versement where code <> 0 AND date_verse BETWEEN '$dateclot' AND '$datefinclot' AND montantv < '$mont'";
+    }else{
+        $co="SELECT *,sum(montantv) as montant FROM versement where code <> 0 AND date_verse BETWEEN '$dateclot' AND '$datefinclot'";
+    }
+    
 }else {
-    $co="SELECT *,sum(montantv) as montant FROM versement where code <> 0 AND date_verse BETWEEN '$dateclot' AND '$datefinclot' AND agence='$pressing'";
+    if($mont != ''){
+        $co="SELECT *,sum(montantv) as montant FROM versement where code <> 0 AND date_verse BETWEEN '$dateclot' AND '$datefinclot' AND agence='$pressing' AND montantv < '$mont'";
+    }else{
+        $co="SELECT *,sum(montantv) as montant FROM versement where code <> 0 AND date_verse BETWEEN '$dateclot' AND '$datefinclot' AND agence='$pressing'";
+    }
+    
 }
 
 if($com=$connec->query($co)){

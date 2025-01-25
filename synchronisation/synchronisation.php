@@ -28,7 +28,6 @@
     $conneconline -> beginTransaction();
 try {
   
-
     // récuperation de l'agence en local
     $ag = "SELECT id_agence FROM agence WHERE statut = 'activer'";
     if($age = $conneclocal -> query($ag)){
@@ -37,7 +36,40 @@ try {
         }
     }
 
-    // Gestion des cartes de fidélites
+    // Gestion des comptes utilisateur
+    /* Après la creation d'un compte utilisateur(par l'administrateur), l'employer dois ce connecter pour la premier fois depuis la 
+    base de données en ligne et apres connexion, ses informations sont automatiquement copier en local(la il peu se connecter sans connexion. ses données
+    de connexion existe en local).
+    Apres connexion, il modifi son mot de passe et afin de quarantire l'intégrité des données, son nouveau mot de passe va etre envoyer au serveur
+    en ligne afin de mettre a jour son compte utilisateur*/
+    
+    $use = "SELECT * FROM comptes WHERE agence='$agence'";
+    if($user = $conneclocal -> query($use)){
+        while($users = $user -> fetch()){
+            $mdp         = $users['mdp_user'];
+            $login       = $users['login_user'];
+            $statutlocal = $users['statut'];
+    
+            // verifier en ligne 
+            $usligne = "SELECT * FROM comptes WHERE agence='$agence' AND mdp_user='$mdp'";
+            if($useligne = $conneconline -> query($usligne)){
+                $nbrUserLigne = $useligne -> rowCount();
+                if($nbrUserLigne < 1){// l'utilisateur a modifier son mot de passe
+                    $upuse = "UPDATE comptes SET mdp_user='$mdp' WHERE login_user='$login'";
+                    if($upuser = $conneconline -> query($upuse)){}
+                }else{
+                    // si le statut de l'utilisateur a été modifier
+                    while($userligne = $useligne -> fetch()){
+                        $statutligne = $userligne['statut'];
+                        if($statutlocal != $statutligne){echo 'yess';
+                            $upuse = "UPDATE comptes SET statut='$statutligne' WHERE login_user='$login'";
+                            if($upuser = $conneclocal -> query($upuse)){}
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     // récuperation des cartes existant en ligne
     $cf = "SELECT * FROM cartefidelite INNER JOIN client on cartefidelite.id_client=client.id_client WHERE client.agence='$agence'";
@@ -47,14 +79,14 @@ try {
             $idclient = $cartef['id_client'];
             $Pourcentage = $cartef['pourcentage'];
             $date_enreg = $cartef['date_enreg'];
-            $montantRed = $cartef['montantRed'];
+            $montantRed = $cartef['montantReduit'];
             $agenceCl = $cartef['agence'];
         
             // vérification de l'existance de la carte en local(si le client a été enregistrer dans le pressing)
             $vecf = "SELECT * FROM cartefidelite WHERE id_carte='$idCF'";
             if($vercf = $conneclocal -> query($vecf)){
                 if ($vercf -> rowCount() == 0){
-                    $incf = "INSERT INTO VALUES('$idCF','$idclient','$Pourcentage','$date_enreg','$montantRed','$agenceCl')";
+                    $incf = "INSERT INTO cartefidelite VALUES('$idCF','$idclient','$Pourcentage','$date_enreg','$montantRed','$agenceCl')";
                     $conneclocal -> exec($incf);
                 }else
                 {
@@ -108,7 +140,9 @@ try {
         array('typevetement','id_typevet'),
         array('verseargent','id_vera'),
         array('versement','id_verse'),
-        array('message','ligne')
+        array('message','ligne'),
+        array('dispovetement','id_depot'),
+        array('backvetement','ligne')
     );
 
     for($i = 0; $i < count($tables);$i++)

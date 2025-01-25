@@ -13,7 +13,6 @@ if($req=$connec->query($re)){
 }else{
     echo 'Problème de connexion';
 }
-
 // récuperation de l'agence en local
 $agence = 0;
 $ag = "SELECT id_agence FROM agence WHERE statut = 'activer'";
@@ -29,16 +28,16 @@ if($typcompte=='admin'){
         while($fer=$er->fetch()){
             $statut=$fer['statut'];
             $userdesact=$fer['nom_user'];
-            if($statut=='Activer'){ 
-                $mof="UPDATE comptes set statut='Desactiver' where id_compte='$id'";
+            if($statut=='activer'){ 
+                $mof="UPDATE comptes set statut='desactiver' where id_compte='$id'";
                 if($mofi=$connec->query($mof)){
                     echo 'oui';
                      // inserer la suppression des les operations
                     $in ="INSERT INTO operationseffectuees VALUES('','$datetime','$nom','Utilisateur','Désactivation','utilisateur desactivé : ".$userdesact."','$agence')";
                     if($ins = $connec -> exec($in)){}
                 }
-            }else if($statut=='Desactiver'){
-                $mo="UPDATE comptes set statut='Activer' where id_compte='$id'";
+            }else if($statut=='desactiver'){
+                $mo="UPDATE comptes set statut='activer' where id_compte='$id'";
                 if($mod=$connec->query($mo)){
                     echo 'oui';
                     // inserer la suppression des les operations

@@ -2,22 +2,19 @@
 <?php
 
 $nowdate = strtotime(date('Y/m/d'));
-$anne = date("Y", $nowdate);
-
+$anne    = date("Y", $nowdate);
 require('connect.php');
-$m=array();
-$nb=array();
+$m  = array();
+$nb = array();
 $se="SELECT *, date_format(date_depot, '%M') as mois, sum(monttotal) as montm FROM facture WHERE YEAR(date_depot)='$anne' group by date_format(date_depot, '%M') order by date_format(date_depot, '%m') asc";
 if($sel=$connec->query($se)){
-    while($sele=$sel->fetch()){
-        $m[]=$sele['mois'];
-        $nb[]=$sele['montm'];
+    while($sele = $sel->fetch()){
+        $m[]  = $sele['mois'];
+        $nb[] = $sele['montm'];
     
     }
        
  ?>
-
-
     <script type="text/javascript">
     function affichgraphedashbord(){ 
         var caissemois = document.getElementById("caissems");
@@ -33,18 +30,18 @@ if($sel=$connec->query($se)){
 
     </script>
 <?php
-    $mdep=array();$nbdep=array();
+    $mdep  = array();
+    $nbdep = array();
 }
 
 $se="SELECT *, date_format(date_enreg, '%M') as moisde, sum(montant) as montdep FROM depense WHERE YEAR(date_enreg)='$anne' group by date_format(date_enreg, '%M') order by date_format(date_enreg, '%m') asc";
 if($sel=$connec->query($se)){
     while($sele=$sel->fetch())
     {
-        $mdep[]=$sele['moisde'];
-        $nbdep[]=$sele['montdep'];
+        $mdep[]  = $sele['moisde'];
+        $nbdep[] = $sele['montdep'];
     }
  ?>
-
     <script type="text/javascript">
         function affichgraphedashborddepense(){ 
             var depnsegraph = document.getElementById("depnsegraph");
@@ -63,7 +60,8 @@ if($sel=$connec->query($se)){
 <?php
 }
 
-$mv=array();$nbve=array();
+$mv   = array();
+$nbve = array();
 
 $ses="SELECT *, date_format(date_vera, '%M') as moisve, sum(montant) as montve FROM verseargent WHERE YEAR(date_vera)='$anne' group by date_format(date_vera, '%M') order by date_format(date_vera, '%m') asc";
 if($sels=$connec->query($ses))
@@ -83,7 +81,7 @@ if($sels=$connec->query($ses))
                                                         options: {responsive: false, scales:{ yAxes: [{ ticks:{ beginAtZero:true }}]}} 
                                                     }
                                     ); 
-            PressingPrConnexion();
+            
 
         }  
  </script>
@@ -93,27 +91,14 @@ if($sels=$connec->query($ses))
 if(isset($_COOKIE["typecompte"]))
 {
     ?> 
-    <script type="text/javascript">                                                       
-    // verifi si la machine est connecté
-    setInterval(() => {
-        if (navigator.onLine) {      
-            // synchronisation
-            synchronisation();
-        } else {
-        // pas de connexion internet
-        }
-    }, 300000);
-
-
-                                                        
-    </script>
+    
 <?php
 }  
  ?>
 <script type="text/javascript">
         //--- PWA
     if ('serviceWorker' in navigator) {  
-        window.addEventListener('load', () => {  
+         window.addEventListener('load', () => {  
             navigator.serviceWorker.register('service-worker.js').then((registration) => {  
                 console.log('Service Worker enregistré avec succès:', registration);  
             }).catch((error) => {  
@@ -168,6 +153,54 @@ function imprime_blocbg(titre,objet)
 
   //  return true;
 }
+
+//recuperation des information de l'utilisateur connecté
+function infoUserConnect(){ 
+    let profilUser  = document.getElementById('profilUser');
+    let posteUser   = document.getElementById('posteUser');
+    let phoneUser   = document.getElementById('phoneUser');
+    let nomUser     = document.getElementById('nomUser');
+    let neeUser     = document.getElementById('neeUser');
+    let contratUser = document.getElementById('contratUser');
+    let diplomeUser = document.getElementById('diplomeUser');
+    let cookie      = localStorage.getItem('login');
+    if(window.XMLHttpRequest){
+       //Mozilla, safari, IE7+...
+       xhr = new XMLHttpRequest();
+   }else if(window.ActiveXObject){
+       //IE 6 et anterieurs
+       xhr = new ActiveXObject("Microsoft.XMLHTTP");
+   }
+   xhr.onreadystatechange = function (){
+    if(xhr.readyState == 4 && xhr.status == 200){
+        const JSONDATA = JSON.parse(xhr.responseText);
+        
+        if (JSONDATA.statut === 200) {
+            posteUser.textContent   = ' : '+JSONDATA.posteUser;
+            phoneUser.textContent   = ' : '+JSONDATA.phoneUser;
+            nomUser.textContent     = ' : '+JSONDATA.nomUser;
+            neeUser.textContent     = ' : '+JSONDATA.neeUser;
+            contratUser.textContent = ' : '+JSONDATA.contrat;
+            diplomeUser.textContent = ' : '+JSONDATA.diplome;
+            if(JSONDATA.profilUser == 'no'){
+                profilUser.src = 'img/administrator1.png';
+                console.log('yes');
+                
+            }else{
+                profilUser.src = 'img/'+JSONDATA.profilUser;
+                console.log('no');
+                
+            }       
+            
+        } else {
+            console.log('Erreur:', JSONDATA.Message);
+        }
+    }
+   }
+xhr.open('GET','infoUserConnect.php?cookie='+encodeURI(cookie));
+xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+xhr.send();
+}
 </script>                                                       
 
 
@@ -192,7 +225,7 @@ function imprime_blocbg(titre,objet)
         <link rel="icon" type="image/png" href="img/Icon.png"/>
         <link rel="stylesheet" href="style.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>
 
         <script src="./chart.js-3.9.1/package/dist/chart.min.js"></script>
         <script type="text/javascript">
@@ -206,10 +239,11 @@ function imprime_blocbg(titre,objet)
                     xhr = new ActiveXObject("Microsoft.XMLHTTP");
                 }
                 xhr.onreadystatechange = function (){
-                    if(xhr.readyState == 4 && xhr.status == 200){
+                    if(xhr.readyState == 4 && xhr.status == 200){console.log("sdsosfojkofofi");
                     let pressing = document.getElementById('pressingConnect');
                     pressing.innerHTML = xhr.responseText;
-
+                    
+                    infoUserConnect(); 
                 }}
                 xhr.open('GET','PressingPrConnexion.php');
                 xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -243,18 +277,17 @@ function imprime_blocbg(titre,objet)
 
             }
         </script>
-        <link rel="stylesheet" href="print/print.min.css">
-        <script src="print/print.min.js"></script>
+
     </head> 
     <body onload="affichgraphedashbord(),acces(),affichblockfidel(),typepressingDette()">
 
 
         <!--bloc programme-->
-        <div id="secur">
+        <!-- <div id="secur">
             <h1 style="color:blue;font-weight: bolder;font-style:italic">GESTPRESSING</h1>
             <h4>Impossible d'accéder au logiciel</h4>
             <h5>La licence d'utilisation du logiciel est expirée.<br>Veuillez contacter l'auteur du logiciel au 699-388-115 ou au 672-222-260<br>pour l'achat d'une nouvelle licence afin de continuer a profité des fonctionnalitées du logiciel </h5>
-        </div>
+        </div> -->
 
         <!--formulaire de connexion au logiciel-->
         <div id="blockconnexion">
@@ -417,7 +450,7 @@ function imprime_blocbg(titre,objet)
                         </tr>
                         <tr>
                             <td class="tdmenunom">
-                                <strong >Powered by TechnoSoft</strong><br>copyright 2022. version 3.0
+                                <strong >Powered by TechnoSoft</strong><br>copyright 2024. version 1.0
                             </td>
                         </tr>
                             
@@ -473,6 +506,14 @@ function imprime_blocbg(titre,objet)
                         </button>&nbsp;&nbsp;&nbsp;
                         <button class="btn btn-danger" onclick="reglefact(),btnClick()">
                             <i class="bi bi-box-arrow-in-left text-light"></i> Sortie vetement
+                        </button>
+                        </button>&nbsp;&nbsp;&nbsp;
+                        <button class="btn btn-warning" onclick="dispofact(),btnClick()" style="color:white">
+                            <i class="bi bi-box-arrow-in-right text-light"></i> Disponibilitée
+                        </button>
+                        </button>&nbsp;&nbsp;&nbsp;
+                        <button class="btn btn-info" onclick="formretourvet(),btnClick()" style="color:white">
+                            <i class="bi bi-box-arrow-in-right text-light"></i> Retour vetements
                         </button>
 
                         <!--gestion des depot de vetements-->
@@ -725,15 +766,19 @@ function imprime_blocbg(titre,objet)
                                 <tr>
                                     <td >cloture de caisse du:</td>
                                     <td style="border-right:1px dashed gray">
-                                        <input type="date" id="dateclotcais" class="form-control" onchange="affichclotcais()" >
+                                        <input type="date" id="dateclotcais" style="width:140px" class="form-control" onchange="affichclotcais()" >
                                     </td>
                                     <td>Entrée en caisse du:</td>
                                     <td>
-                                        <input type="date" id="dateentrecais" class="form-control" onchange="affichentrecaisse()" >
+                                        <input type="date" id="dateentrecais" style="width:140px" class="form-control" onchange="affichentrecaisse()" >
                                     </td>
                                     <td> Au:</td>
                                     <td>
-                                        <input type="date" id="dateentrecaisfin" class="form-control" onchange="affichentrecaisse()" >
+                                        <input type="date" id="dateentrecaisfin" style="width:140px" class="form-control" onchange="affichentrecaisse()" >
+                                    </td>
+                                    <td> Montant inferieur a:</td>
+                                    <td>
+                                        <input type="number" id="montInfcaiss" style="width:140px" class="form-control" onkeyup="affichentrecaisse()" >
                                     </td>
                                 </tr>
                             </table>
@@ -808,6 +853,7 @@ function imprime_blocbg(titre,objet)
 
                     <!--affiche l'interface des vetements que la date de sortie est atteint et/ou depassé-->
                     <div id="gestsortaujd"><br>
+                    <div style="display:flex;flex-wrap:wrap">
                         <button class="btn btn-primary" onclick="affichvetpresent()">
                             <i class="bi bi-capslock text-light"></i> Vêtements présent
                         </button>&nbsp;&nbsp;&nbsp;
@@ -822,11 +868,17 @@ function imprime_blocbg(titre,objet)
                         </button>&nbsp;&nbsp;&nbsp;&nbsp;
                         <button class="btn btn-success" onclick="actulistvetpresent()">
                             <i class="bi bi-repeat text-light"></i> Actualiser
+                        </button>&nbsp;&nbsp;&nbsp;
+                        <button class="btn btn-dark" onclick="affichvetAlaver()">
+                            <i class="bi bi-repeat text-light"></i> Vêtements à nettoyer.
                         </button>&nbsp;&nbsp;&nbsp; <br>
                         <button class="btn btn-info dropdown-toggle" style="margin-bottom:1% ;" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="margin-bottom:1% ;">
                             <i class="bi bi-steam"></i>Pressings
                         </button>&nbsp;&nbsp;
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1" id="listAgenceStock"></ul>
+                    </div>
+                        
+
 
                         <!-- id du pressing sélectionné -->
                         <input type="hidden" id="selectpressingStock" value="all">
@@ -853,7 +905,67 @@ function imprime_blocbg(titre,objet)
                                             <table id="tabnewcomande">
                                                 
                                                   <tr><td id="tdlisteDette" colspan="3"><div id="zonegraphdashbord" style="">
-                                                    <div style="border-radius:6px;margin-left:3%;margin-top:3%;background:white;padding:15px 12px;text-align:left;font-size:13px;color:black;width:500px"><div style="color:gray;text-align:center;font-size:20px;font-style:italic"><strong>À propos de l'entreprise TechnoSoft </strong></div><br>
+                                                  <div style="border-radius:6px;margin-left:3%;margin-top:3%;background:white;padding:15px 12px;text-align:left;font-size:13px;color:black;width:500px" class="card">
+                                                  <div class="card-body" >
+                                                    <h5 class="card-title text-primary" style="text-align:center">Utilisateur connecté</h5>
+                                                    
+                                                    <div style="display:flex">
+                                                        <div style='width:150px;margin-right:10px'>
+                                                            <img src="img/administrator1.png" alt="" id="profilUser" style="width:100%;height:150px;border-radius:50%;border:0.5px solid gray"><label for="fileimage" class="btn btn-primary" style="position:relative;margin-top:-46px;margin-left:116px;padding:5px">
+                                                            <i class="bi bi-images text-light"></i>
+                                                            </label>
+                                                        <input type="file" accept=".jpg,.png" id="fileimage" onchange="UpdateProfilImg()" style="display:none">
+                                                        </div>
+                                                        <div>
+                                                            <table style="font-size:14px;font-weight:verdana">
+                                                                <tr >
+                                                                    <td>Nom </td>
+                                                                    <td><span id="nomUser" ></span></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Téléphone </td>
+                                                                    <td><span id="phoneUser"></span></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Née le </td>
+                                                                    <td><span id="neeUser"></span></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Type de contrat </td>
+                                                                    <td ><span id="contratUser"></span></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Diplome </td>
+                                                                    <td><span id="diplomeUser"></span></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Poste  </td>
+                                                                    <td><span id="posteUser"></span></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Mot de passe </td>
+                                                                    <td><span class="text-primary" style="cursor:pointer" onclick="document.getElementById('formmodifpassword').style.display='block'"><i class="bi bi-pencil text-primary"></i> Modifier</span></td>
+                                                                </tr>
+                                                            </table>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                   <!--  <div>
+                                                        <button class="btn btn-primary" onclick="ouvrenewclient(),btnClick()">
+                                                        <i class="bi bi-plus-lg text-light"></i>
+                                                        </button>&nbsp;&nbsp;&nbsp;
+                                                        <button class="btn btn-success" onclick="affichtypevete(),btnClick()">
+                                                            <i class="bi bi-receipt-cutoff text-light"></i>
+                                                        </button>
+                                                    </div> -->
+
+                                                    <!-- graphe des charges et depense lier -->
+                                                    <div>
+
+                                                    </div>
+                                                    
+                                                  </div>
+                                                    <!-- <div style="color:gray;text-align:center;font-size:20px;font-style:italic"><strong>À propos de l'entreprise TechnoSoft </strong></div><br>
 
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;L'entreprise <strong> TechnoSoft</strong> est spécialisée dans le développement des logiciels de bureau, applications web et mobiles, sites web, etc.
 
@@ -867,7 +979,7 @@ function imprime_blocbg(titre,objet)
     •  <strong>ChiefDom</strong> : Application mobile pour les chefferies et les ressortissants <br><br>
 
     •  <strong>TechnoCommerce</strong> : Logiciel de gestion des boutiques, magasins, supermarchés, etc. <br><br>
-    •  <strong>Children People</strong> : Application mobile reservée aux orphelinats <br></div> <br>
+    •  <strong>Children People</strong> : Application mobile reservée aux orphelinats <br> --></div> <br>
                                                   <div style="border-radius:6px;margin-left:3%;margin-top:3%;background:white;padding:15px 12px;text-align:center;font-size:16px;color:gray">Representation des entrées de chaque mois</br><canvas id="caissems" style="height:300px;width:350px"></canvas></div>
                                                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<div style="border-radius:6px;margin-left:3%;margin-top:3%;background:white;padding:15px 12px;text-align:center;font-size:16px;color:gray">Representation des versements de chaque mois</br><canvas id="versebanqgraph" style="height:300px;width:350px"></canvas></div></br/><br>
                                                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<div style="border-radius:6px;margin-left:3%;margin-top:3%;background:white;padding:15px 12px;text-align:center;font-size:16px;color:gray">Representation des dépenses de chaque mois</br><canvas id="depnsegraph" style="height:300px;width:350px"></canvas></div>
@@ -889,7 +1001,14 @@ function imprime_blocbg(titre,objet)
               <tr><td id="tdlisteDette" colspan="3"><iframe id="listevetsort" src="printRapport.php"></iframe></td></tr>
               <tr id="trdepdate"><td >Vetements sortie du:<input type="date" id="debutrapvetsort" class="depdate" onchange="rapportlistevetsort()"> au: <input type="date" id="finrapvetsort" class="depdate" onchange="rapportlistevetsort()"></td><td><select id="keppressingRapportvetsort" class="typePressing" style="border-radius:7px;" onchange="rapportlistevetsort()"></select></td><td></td></tr>
         </table> 
- </div>
+      </div>
+      <!--Liste les vetements retourné-->
+      <div id="rapportlistvetback" >
+        <table id="tabnewcomande">         
+              <tr><td id="tdlisteDette" colspan="3"><iframe id="listevetback" src="printRapport.php"></iframe></td></tr>
+              <tr id="trdepdate"><td >Vetements retournés du:<input type="date" id="debutrapvetback" class="depdate" onchange="rapportlistevetback()"> au: <input type="date" id="finrapvetback" class="depdate" onchange="rapportlistevetback()"></td><td><select id="keppressingRapportvetback" class="typePressing" style="border-radius:7px;" onchange="rapportlistevetback()"></select></td><td></td></tr>
+        </table> 
+      </div>
        <!--Liste les depenses pendant une periode-->
        <div id="rapportlistdepense" >
         <table id="tabnewcomande">         
@@ -986,6 +1105,24 @@ function imprime_blocbg(titre,objet)
     </fieldset>
             </div>
     </div>
+
+        <!--creation du formulaire de modification du mot de passe d'un utilisateur-->
+    <div class="card" id="formmodifpassword">
+            <div class="card-body">                
+    <div id="ferme" onclick="fermeupdatepassword(),btnClick()">X</div>
+    <fieldset class="fildsetnewclient">
+        <h5 class="card-title">Modifier mon mot de passe</h5>
+        <table id="tabnewcomp">
+            <tr><td><br><input type="password" placeholder="votre mot de passe" name="AncienPasse" id="AncienPasse" class="form-control"><br></td></tr>
+            <tr><td><input type="password" placeholder="Nouveau mot de passe" name="newPass" id="newPass" class="form-control"><br></td></tr>
+            <tr><td><input type="password" placeholder="Confirme le mot de passe" name="confirmPass" id="confirmPass" class="form-control"><br></td></tr>
+            <tr><td style="text-align:center"><button id="btnupdatepassword" onclick="updatePassword()" class="btn btn-primary">Modifier</button></td></tr>
+            <tr><br><td id="resultupdatepassword"></td></tr>
+        </table>
+    </fieldset>
+            </div>
+    </div>
+
                     <!--BLOCK permettant la gestion du personnel-->
     <div class="card" id="blockpersonnel">
             <div class="card-body">                
@@ -1217,6 +1354,24 @@ function imprime_blocbg(titre,objet)
                                                         </table>
                                                     </div>
                                                 </div>
+
+        </div>                                      <!--gestion de la disponibilitée des vetements -->
+                                                <div class="card" id="dispovet">
+                                                    <div class="card-body">
+                                                    
+                                                        <div id="fermer" onclick="fermedispovet(),btnClick()" style="width:10%;margin-left:90%">X</div>
+                                                        <h5 class="card-title">Enregistrer la disponibilitée des vetements d'une facture </h5>
+
+                                                        <table id="tabnewsortie" style="border:0px">
+                                                            
+                                                              <tr><td id="tdcodefactsort"><input type="number" placeholder="Numéro de la facture" class="form-control" id="codefactdispo" ></td><td style="text-align:right"><button class="btn btn-primary" onclick=" listehabfactDisponibilite(),btnClick()"><i class="bi bi-search text-light"></i> Recherche</button></td></tr>
+                                                           </div> </form><tr><td colspan="3" id="smsFormsort"></td></tr>
+                                                            <tr><td colspan="2"><div id="affichvetdispo">Liste des vetements de la facture</div></td></tr>
+                                                            <tr><td id="etatFctDRDispo"></td></tr>
+                                                            <tr><td colspan="2" style='font-weight:bold'>Reste a payer:<span id="restedispo">0</span>Fcfa&nbsp;&nbsp;&nbsp;<button class="btn btn-primary" onclick="valideDispoVet()"><i class="bi bi-check-circle text-light"></i> Valider la disponibilitée</button> un SMS est envoyé au client concerné</td></tr>
+                                                        </table>
+                                                    </div>
+                                                </div>
                  <!--Affichage des type de vetement-->
                  <div class="card" id="affichtypevet">
                        <div class="card-body">
@@ -1335,6 +1490,23 @@ function imprime_blocbg(titre,objet)
             </table>
         </fieldset>
 </div></div>
+          <!--formulaire d'enregistrement des retours de vetement-->
+    <div class="card" id="formnewretourvet">
+            <div class="card-body">
+        <div id="ferme" onclick="document.getElementById('formnewretourvet').style.display='none'">X</div>
+        <fieldset class="fildsetnewclient">
+            <h5 class="card-title">Enregistrer le retour d'un vetement</h5>
+            <table id="tabnewcomp">
+                <tr><td id="choixdep"></td></tr>
+                <tr><td><input type="text" placeholder="code du vetement" name="motifdep" id="codevetback" readonly class="form-control"><br></td></tr><tr><td><input type="number" placeholder="Quantité retournée" name="reductcarte" class="form-control" id="qteBack"><br></td></tr>
+                <tr><td><textarea name="" id="motifBack" class="form-control" resize="no" placeholder="Motif du retour"></textarea><br></td></tr>
+                <tr><td colspan="2"><button id="btnnewcarte" onclick="insertRetourVet(),btnClick()">Valider le retour</button><br></td></tr>
+                <tr><td colspan="2" id="smsbackvet"></td></tr>
+                <tr><td colspan="2"><div id="choixvetFactRetour">liste des clients</div></td></tr>
+                <tr><td colspan="2"><input type="text" placeholder="code de la facture" id="searchvetFactRetour" class="form-control" onkeyup="vetFactPrRetour()" style="border:0.5px solid gray"></td></tr>
+            </table>
+        </fieldset>
+</div></div>
        <!-- formulaire d'envoi de message a un client-->
     <div class="card" id="formnsendsmsCl">
             <div class="card-body">
@@ -1387,6 +1559,7 @@ function imprime_blocbg(titre,objet)
                     <tr><td  id="gestrapport">Groupe Star RAPPORTS</td><td><div id="fermerapport" onclick="closerappo()">X</div></td></tr>
                     <tr><td colspan="2" class="tdmenu" onclick="typepressingrapport('keppressingRapportvetdepot'),afficheblock(rapportlistvetdepot)"><img src="./img/Paste_50px.png" class="menuicon">Journal des dépots</td></tr>
                     <tr><td colspan="2" class="tdmenu" onclick="typepressingrapport('keppressingRapportvetsort'),afficheblock(rapportlistvetsort)"><img src="./img/Paste_50px.png" class="menuicon">Journal des sorties</td></tr>
+                    <tr><td colspan="2" class="tdmenu" onclick="typepressingrapport('keppressingRapportvetback'),afficheblock(rapportlistvetback)"><img src="./img/Paste_50px.png" class="menuicon">Journal des retours</td></tr>
                     <tr><td colspan="2" class="tdmenu" onclick="typepressingrapport('keppressingRapportdepense'),afficheblock(rapportlistdepense)"><img src="./img/Paste_50px.png" class="menuicon">Journal des depenses</td></tr>
                     <tr><td colspan="2" class="tdmenu" onclick="typepressingrapport('keppressingRapportregle'),afficheblock(rapportlistdett)"><img src="./img/Paste_50px.png" class="menuicon">Journal des dettes</td></tr>
                     <tr><td colspan="2" class="tdmenu" onclick="typepressingrapport('keppressingRapportfacture'),afficheblock(rapportlistfacture)"><img src="./img/Paste_50px.png" class="menuicon">Journal des factures</td></tr>
@@ -1396,7 +1569,7 @@ function imprime_blocbg(titre,objet)
                     <tr><td colspan="2" class="tdmenu" onclick="typepressingrapport('keppressingRapportCAvet'),afficheblock(rapportlistargantvet)"><img src="./img/Paste_50px.png" class="menuicon">Chiffre d'affaire par vetement</td></tr>
                     <tr><td colspan="2" class="tdmenu" onclick="typepressingrapport('keppressingRapportclotcaisse'),afficheblock(rapportlistcloturcaus)"><img src="./img/Paste_50px.png" class="menuicon">Journal des clotures de caisse</td></tr>
                     <tr><td colspan="2" class="tdmenu" onclick="rapportlisteclotcais(),afficheblock(rapportlistcloturcaus)"><img src="./img/Paste_50px.png" class="menuicon">Etats de caisse</td></tr>
-                    <tr><td colspan="2" class="tdmenunom"><strong id="nomlogic">Technosoft</strong><br>copyright 2022. version 3.0</td></tr>
+                    <tr><td colspan="2" class="tdmenunom"><strong id="nomlogic">Technosoft</strong><br>copyright 2024. version 1.0</td></tr>
                     
                 </table>
 </td></tr></table>
@@ -1413,6 +1586,20 @@ function imprime_blocbg(titre,objet)
   <script src="assets/vendor/tinymce/tinymce.min.js"></script>
   <script src="assets/vendor/php-email-form/validate.js"></script>
   <script src="script.js" async></script>
-
+  <script type="text/javascript">                                                       
+    // verifi si la machine est connecté
+    setInterval(() => {
+        if (navigator.onLine) {   
+        
+            // synchronisation
+            synchronisation();
+        } else {
+            // pas de connexion internet
+            synchronisation(); // pour les test
+        }
+    }, 5000);//300000
+         
+    PressingPrConnexion();                                            
+    </script>
     </body>
 </html>

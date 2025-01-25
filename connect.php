@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 // vérifi si l'utilisateur connecter est un admin ou un simple user
 if(isset($_COOKIE["typecompte"]))
@@ -18,7 +18,7 @@ if(isset($_COOKIE["typecompte"]))
         $util   = "root";
         $mtp    = "";
         $connec = new PDO("$server;dbname=$bd","$util","$mtp");//echo '<option>2</option>';
-    }
+    } 
 }
 else
 {

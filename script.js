@@ -21,6 +21,33 @@ function temprest(){
     xhr.send();
 
 }
+//fonction de modification de sa photo de profil
+function UpdateProfilImg(){
+    let cookie = localStorage.getItem('login');
+    var fileimage = document.getElementById('fileimage').files[0];
+    
+    if(window.XMLHttpRequest){
+        //Mozilla, safari, IE7+...
+        xhr = new XMLHttpRequest();
+    }else if(window.ActiveXObject){
+        //IE 6 et anterieur
+        xhr = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xhr.onreadystatechange = function (){
+       
+        if(xhr.readyState == 4 && xhr.status == 200){
+             console.log('Update profil image :  '+xhr.responseText);
+             document.location.href = 'index.php';
+        
+    }}
+    var form = new FormData();
+    form.append('cookie', cookie);
+    form.append('file', fileimage);
+    xhr.open('POST','UpdateProfilImg.php');
+    //xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhr.send(form);
+
+}
 //fonction d'enregistrement des depot d'habit
 function depovetcmd(){
     let codeclient = document.getElementById('codeclient').value;
@@ -346,9 +373,9 @@ connexion.addEventListener('click',(e)=>{
 function acces (){
     let blockconnexion = document.querySelector('#blockconnexion');
     let tex = localStorage.getItem('login');
-    if((tex.length)!==null){
+    if(tex !== null){
         blockconnexion.setAttribute("style","display:none");
-    }else if((tex.length)===null){
+    }else if(tex === null){
         blockconnexion.setAttribute("style","display:block");
     
     }
@@ -431,6 +458,10 @@ function annonce(para1){
   }
   function fermecompte(){
     let formnewcompt =document.getElementById('formnewcompt');
+    formnewcompt.style.display="none";
+}
+  function fermeupdatepassword(){
+    let formnewcompt =document.getElementById('formmodifpassword');
     formnewcompt.style.display="none";
 }
 //fermer le formulaire d'enregistrement d'un client
@@ -605,52 +636,56 @@ xhr.send();
 }
 //fonction d'affichage des donnees en fonction du client de l'utilisateur
 function afficheblock(blockclick){
-    btnClick();
-  let affichecompt = document.getElementById('affichecompt');
-  let gestclient = document.getElementById('gestclient');
-  let gestvetement = document.getElementById('gestvetement');
-  let gestdepense = document.getElementById('gestdepense');
-  let gestdette = document.getElementById('gestdette');
-  let gestcaisse = document.getElementById('gestcaisse');
-  let gestfidelitecl = document.getElementById('gestfidelitecl');
-  let rapportlistvetdepot = document.getElementById('rapportlistvetdepot');
-  let rapportlistvetsort = document.getElementById('rapportlistvetsort');
-  let rapportlistdepense = document.getElementById('rapportlistdepense');
-  let rapportlistfacture = document.getElementById('rapportlistfacture');
-  let rapportlistcartef = document.getElementById('rapportlistcartef');
-  let rapportlistdett = document.getElementById('rapportlistdett');
-  let rapportlistargantcli = document.getElementById('rapportlistargantcli');
-  let rapportlistargantvet = document.getElementById('rapportlistargantvet');
+  btnClick();
+
+  let affichecompt          = document.getElementById('affichecompt');
+  let gestclient            = document.getElementById('gestclient');
+  let gestvetement          = document.getElementById('gestvetement');
+  let gestdepense           = document.getElementById('gestdepense');
+  let gestdette             = document.getElementById('gestdette');
+  let gestcaisse            = document.getElementById('gestcaisse');
+  let gestfidelitecl        = document.getElementById('gestfidelitecl');
+  let rapportlistvetdepot   = document.getElementById('rapportlistvetdepot');
+  let rapportlistvetsort    = document.getElementById('rapportlistvetsort');
+  let rapportlistdepense    = document.getElementById('rapportlistdepense');
+  let rapportlistfacture    = document.getElementById('rapportlistfacture');
+  let rapportlistcartef     = document.getElementById('rapportlistcartef');
+  let rapportlistdett       = document.getElementById('rapportlistdett');
+  let rapportlistargantcli  = document.getElementById('rapportlistargantcli');
+  let rapportlistargantvet  = document.getElementById('rapportlistargantvet');
   let rapportlistcloturcaus = document.getElementById('rapportlistcloturcaus');
-  let gestersement = document.getElementById('gestersement');
-  let gestsortaujd = document.getElementById('gestsortaujd');
-  let rapportlistverse = document.getElementById('rapportlistverse');
-  let gestdashbord = document.getElementById('gestdashbord');
-  let gestsms = document.getElementById('gestsms');
-  let operationEffect = document.getElementById('operationEffect');
-  gestdashbord.style.display="none";
-  gestsortaujd.style.display="none";
-  rapportlistverse.style.display="none";
-  gestersement.style.display="none";
-  rapportlistcloturcaus.style.display="none";
-  rapportlistargantvet.style.display="none";
-  rapportlistargantcli.style.display="none";
-  rapportlistdett.style.display="none";
-  rapportlistcartef.style.display="none";
-  rapportlistfacture.style.display="none";
-  rapportlistdepense.style.display="none";
-  rapportlistvetsort.style.display="none";
-  rapportlistvetdepot.style.display="none";
-  gestfidelitecl.style.display="none";
-  gestcaisse.style.display='none';
-  gestdette.style.display='none';
-  gestdepense.style.display='none';
-  gestvetement.style.display='none';
-  gestclient.style.display='none';
-  affichecompt.style.display='none';
-  gestsms.style.display='none';
-  operationEffect.style.display='none';
-  blockclick.style.display='block';
+  let rapportlistvetback    = document.getElementById('rapportlistvetback');
+  let gestersement          = document.getElementById('gestersement');
+  let gestsortaujd          = document.getElementById('gestsortaujd');
+  let rapportlistverse      = document.getElementById('rapportlistverse');
+  let gestdashbord          = document.getElementById('gestdashbord');
+  let gestsms               = document.getElementById('gestsms');
+  let operationEffect       = document.getElementById('operationEffect');
+
+  gestdashbord.style.display          = "none";
+  gestsortaujd.style.display          = "none";
+  rapportlistverse.style.display      = "none";
+  gestersement.style.display          = "none";
+  rapportlistcloturcaus.style.display = "none";
+  rapportlistargantvet.style.display  = "none";
+  rapportlistargantcli.style.display  = "none";
+  rapportlistdett.style.display       = "none";
+  rapportlistcartef.style.display     = "none";
+  rapportlistfacture.style.display    = "none";
+  rapportlistdepense.style.display    = "none";
+  rapportlistvetsort.style.display    = "none";
+  rapportlistvetdepot.style.display   = "none";
+  rapportlistvetback.style.display    = "none";
+  gestfidelitecl.style.display        = "none";
+  gestcaisse.style.display            = 'none';
+  gestdette.style.display             = 'none';
+  gestdepense.style.display           = 'none';
+  gestvetement.style.display          = 'none';
+  gestclient.style.display            = 'none';
+  affichecompt.style.display          = 'none';
+  gestsms.style.display               = 'none';
+  operationEffect.style.display       = 'none';
+  blockclick.style.display            = 'block';
 }
 //fonction d'enregistrement des clients
 function newclient(){
@@ -844,6 +879,16 @@ function reglefact(){
     let sortievet = document.getElementById('sortievet');
     sortievet.style.display="block";
 }
+//affichage du formulaire de d'enregistrement de la disponinlité des vet d'une facture
+function dispofact(){
+    let sortievet = document.getElementById('dispovet');
+    sortievet.style.display="block";
+}
+//affichage du formulaire de d'enregistrement des vetement retourné
+function formretourvet(){
+    let sortievet = document.getElementById('formnewretourvet');
+    sortievet.style.display="block";
+}
 
 //fonction d'affichage de la liste des vetement deposé consernant une facture
 function listehabfact(){
@@ -866,6 +911,54 @@ function listehabfact(){
     }
    }
 xhr.open('GET','listeHabitFact.php?codefact='+codefactsort);
+xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+xhr.send();
+}
+//fonction de validation de la disponibilitée des vetement d'une facture
+function valideDispoVet(){
+    let codefactsort = document.getElementById('codefactdispo').value;
+    let cookie = localStorage.getItem('login');
+    if(window.XMLHttpRequest){
+        //Mozilla, safari, IE7+...
+        xhr = new XMLHttpRequest();
+    }else if(window.ActiveXObject){
+        //IE 6 et anterieurs
+        xhr = new ActiveXObject("Microsoft.XMLHTTP");
+
+    }
+    xhr.onreadystatechange = function (){
+    if(xhr.readyState == 4 && xhr.status == 200){
+         const result = xhr.responseText;
+         alert(result);
+         etatfactureDispo();
+         
+    }
+   }
+xhr.open('GET','valideDispoVet.php?codefact='+codefactsort+'&cookie='+cookie);
+xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+xhr.send();
+}
+//fonction d'affichage de la liste des vetement deposé consernant une facture pour ca disponibilité
+function listehabfactDisponibilite(){
+    let codefactsort = document.getElementById('codefactdispo').value;
+    if(window.XMLHttpRequest){
+        //Mozilla, safari, IE7+...
+        xhr = new XMLHttpRequest();
+    }else if(window.ActiveXObject){
+        //IE 6 et anterieurs
+        xhr = new ActiveXObject("Microsoft.XMLHTTP");
+
+    }
+    xhr.onreadystatechange = function (){
+    if(xhr.readyState == 4 && xhr.status == 200){
+         let affichvetsort = document.getElementById('affichvetdispo');
+         affichvetsort.innerHTML=xhr.responseText;
+         affichresteApayerDispo();
+         etatfactureDispo();
+         
+    }
+   }
+xhr.open('GET','listehabfactDisponibilite.php?codefact='+codefactsort);
 xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 xhr.send();
 }
@@ -892,6 +985,29 @@ function affichresteApayer(){
 
          //liste des pressings
          typepressingDepense();
+    }
+   }
+xhr.open('GET','ResteApayerFact.php?codefact='+codefactsort);
+xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+xhr.send();
+
+}
+//fonction affiche reste a payer pour disponibilité
+function affichresteApayerDispo(){
+    let codefactsort = document.getElementById('codefactdispo').value;
+    if(window.XMLHttpRequest){
+        //Mozilla, safari, IE7+...
+        xhr = new XMLHttpRequest();
+    }else if(window.ActiveXObject){
+        //IE 6 et anterieurs
+        xhr = new ActiveXObject("Microsoft.XMLHTTP");
+
+    }
+    xhr.onreadystatechange = function (){
+    if(xhr.readyState == 4 && xhr.status == 200){
+         let restesort = document.getElementById('restedispo');
+         restesort.innerHTML=xhr.responseText;
+
     }
    }
 xhr.open('GET','ResteApayerFact.php?codefact='+codefactsort);
@@ -975,10 +1091,38 @@ xhr.open('GET','etatfacture.php?etat='+codefactsort);
 xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 xhr.send();
 }
+//verification de l'etat de la facture(disponible ou non disponible)
+function etatfactureDispo(){
+    let codefactsort = document.getElementById('codefactdispo').value;
+    if(window.XMLHttpRequest){
+        //Mozilla, safari, IE7+...
+        xhr = new XMLHttpRequest();
+    }else if(window.ActiveXObject){
+        //IE 6 et anterieurs
+        xhr = new ActiveXObject("Microsoft.XMLHTTP");
+
+    }
+    xhr.onreadystatechange = function (){
+    if(xhr.readyState == 4 && xhr.status == 200){
+        let etatFctDR = document.getElementById('etatFctDRDispo');
+        etatFctDR.innerHTML=xhr.responseText;
+        affichresteApayerDispo();
+
+    }
+   }
+xhr.open('GET','etatfactureDispo.php?etat='+codefactsort);
+xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+xhr.send();
+}
 
 //ferme block sortie vetement
 function fermesortvet(){
    let sortievet = document.getElementById('sortievet');
+   sortievet.style.display="none";
+}
+//ferme block disponibilité vetement
+function fermedispovet(){
+   let sortievet = document.getElementById('dispovet');
    sortievet.style.display="none";
 }
 //ouverture du formulaire de création du type de depense
@@ -1504,6 +1648,27 @@ function clientnewcarte(){
  xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
  xhr.send();
 }
+//fonction d'affichage des vetements d'une facture pour le retour
+function vetFactPrRetour(){
+    let searchclcarte = document.getElementById('searchvetFactRetour').value;
+    if(window.XMLHttpRequest){
+        //Mozilla, safari, IE7+...
+        xhr = new XMLHttpRequest();
+    }else if(window.ActiveXObject){
+        //IE 6 et anterieurs
+        xhr = new ActiveXObject("Microsoft.XMLHTTP");
+ 
+    }
+    xhr.onreadystatechange = function (){
+    if(xhr.readyState == 4 && xhr.status == 200){
+        let choixclcart = document.getElementById('choixvetFactRetour');
+        choixclcart.innerHTML=xhr.responseText;
+    }
+   }
+ xhr.open('GET','vetFactPrRetour.php?nom='+searchclcarte);
+ xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+ xhr.send();
+}
 //fonction de recuperation de l'ident du client choisi
 function kelclcarte(para){
     if(window.XMLHttpRequest){
@@ -1524,6 +1689,42 @@ function kelclcarte(para){
  xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
  xhr.send();
 }
+
+//fonction de recuperation de l'ident du vitement a faire retourné
+function kelvetretourn(para){
+    document.getElementById('codevetback').value = para;
+}
+
+//fonction de validaation d'un retour de vetement
+function insertRetourVet(){
+    let cookie    = localStorage.getItem('login');
+    var codevet   = document.getElementById('codevetback').value;
+    var qte       = document.getElementById('qteBack').value;
+    var motifBack = document.getElementById('motifBack').value;
+    if(window.XMLHttpRequest){
+        //Mozilla, safari, IE7+...
+        xhr = new XMLHttpRequest();
+    }else if(window.ActiveXObject){
+        //IE 6 et anterieurs
+        xhr = new ActiveXObject("Microsoft.XMLHTTP");
+ 
+    }
+    xhr.onreadystatechange = function (){
+    if(xhr.readyState == 4 && xhr.status == 200){
+        let codeclcarte = document.getElementById('smsbackvet');
+        codeclcarte.innerHTML = xhr.responseText;
+    }
+   }
+   var formData = new FormData();
+   formData.append('cookie', cookie);
+   formData.append('codevet', codevet);
+   formData.append('qte', qte);
+   formData.append('motifBack', motifBack);
+ xhr.open('POST','kelvetretourn.php');
+ //xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+ xhr.send(formData); 
+}
+
 //suppression de l'actualisation
 let btnnewcarte = document.getElementById('btnnewcarte');
 btnnewcarte.addEventListener('click',(e)=>{
@@ -1753,6 +1954,36 @@ function rapportlistevet(){
     }
    }
  xhr.open('GET','affichrapportvetdepot.php?ddebu='+debutrapvetdepot+'&dfin='+finrapvetdepot+'&pressing='+pressing);
+ xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+ xhr.send();
+}
+//fonction d'affichage de la liste des vetements retourné
+function rapportlistevetback(){
+    
+    let debutrapvetdepot = document.getElementById('debutrapvetback').value;
+    let finrapvetdepot = document.getElementById('finrapvetback').value;
+    let pressing = document.getElementById('keppressingRapportvetback').value;
+    if(window.XMLHttpRequest){
+        //Mozilla, safari, IE7+...
+        xhr = new XMLHttpRequest();
+    }else if(window.ActiveXObject){
+        //IE 6 et anterieurs
+        xhr = new ActiveXObject("Microsoft.XMLHTTP");
+ 
+    }
+    xhr.onreadystatechange = function (){
+    if(xhr.readyState == 4 && xhr.status == 200){
+        
+       let iframe = document.getElementById('listevetback'); 
+       iframe.onload = function () { 
+            let iframeDocument = iframe.contentDocument || iframe.contentWindow.document; 
+            let listevetentre = iframeDocument.getElementById('contentPrintRapport'); 
+            listevetentre.innerHTML = xhr.responseText;
+        }; 
+        iframe.src = 'printRapport.php'; // Actualise l'iframe en réassignant sa source
+    }
+   }
+ xhr.open('GET','affichrapportvetback.php?ddebu='+debutrapvetdepot+'&dfin='+finrapvetdepot+'&pressing='+pressing);
  xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
  xhr.send();
 }
@@ -2957,9 +3188,11 @@ xhr.send('montreel='+encodeURI(montreel)+'&dateclo='+encodeURI(dateclo)+'&cookie
 //fonction affichage des entrées en caisse 
 function affichentrecaisse(){ 
     btnClick();
-    let dateclotcais = document.getElementById('dateentrecais').value;
-    let dateentrecaisfin = document.getElementById('dateentrecaisfin').value;
-    let keppressingcaisse = document.getElementById('keppressingcaisse').value;
+    let dateclotcais       = document.getElementById('dateentrecais').value;
+    let dateentrecaisfin   = document.getElementById('dateentrecaisfin').value;
+    let keppressingcaisse  = document.getElementById('keppressingcaisse').value;
+    let montInfcaiss       = document.getElementById('montInfcaiss').value;
+
     if(window.XMLHttpRequest){
        //Mozilla, safari, IE7+...
        xhr = new XMLHttpRequest();
@@ -2973,7 +3206,7 @@ function affichentrecaisse(){
      listeetatcais.innerHTML = xhr.responseText;
    }
   }
-xhr.open('GET','afiichentrecaisse.php?dateclot='+dateclotcais+'&datefinclot='+dateentrecaisfin+'&pressing='+encodeURI(keppressingcaisse));
+xhr.open('GET','afiichentrecaisse.php?dateclot='+dateclotcais+'&datefinclot='+dateentrecaisfin+'&pressing='+encodeURI(keppressingcaisse)+'&mont='+encodeURI(montInfcaiss));
 xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 xhr.send();
 }
@@ -3005,6 +3238,29 @@ function affichvetpresent(){
    }
   }
 xhr.open('GET','afiichvetpresent.php?datedepotvetstock='+datedepotvetstock+'&pressing='+encodeURI(pressing));
+xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+xhr.send();
+}
+
+//fonction d'affichage des  Vêtements à nettoyer.
+function affichvetAlaver(){ 
+    btnClick();
+    const pressing = document.getElementById('selectpressingStock').value;
+    btnClick();
+    if(window.XMLHttpRequest){
+       //Mozilla, safari, IE7+...
+       xhr = new XMLHttpRequest();
+   }else if(window.ActiveXObject){
+       //IE 6 et anterieurs
+       xhr = new ActiveXObject("Microsoft.XMLHTTP");
+   }
+   xhr.onreadystatechange = function (){
+   if(xhr.readyState == 4 && xhr.status == 200){
+     let listestock = document.getElementById('listestock');
+     listestock.innerHTML = xhr.responseText;
+   }
+  }
+xhr.open('GET','affichvetAlaver.php?pressing='+encodeURI(pressing));
 xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 xhr.send();
 }
@@ -3297,6 +3553,9 @@ function typepressingrapport(id){
      if(id == 'keppressingRapportclotcaisse'){
         rapportlisteclotcais();
      }
+     if(id == 'keppressingRapportvetback'){
+        rapportlistevetback();
+     }
    }
   }
 xhr.open('GET','typepressingVersement.php');
@@ -3475,7 +3734,6 @@ function afficheMessageSend(){
 }
 
 function synchronisation(){
-  
     if(window.XMLHttpRequest){
         //Mozilla, safari, IE7+...
         xhr = new XMLHttpRequest();
@@ -3638,6 +3896,38 @@ function affichPaieEmploye(){
     xhr.send();
 
 }
+// affiche le contrat de travail
+function affichContratEmploye(){
+    
+
+    var idcompte = document.getElementById('idCompGest').value; 
+
+    if(window.XMLHttpRequest){
+        //Mozilla, safari, IE7+...
+        xhr = new XMLHttpRequest();
+    }else if(window.ActiveXObject){
+        //IE 6 et anterieur
+        xhr = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xhr.onreadystatechange = function (){
+        if(xhr.readyState == 4 && xhr.status == 200){
+        
+
+            let iframe = document.getElementById('contentElemetGestPersonnel'); 
+            iframe.onload = function () { 
+                 let iframeDocument = iframe.contentDocument || iframe.contentWindow.document; 
+                 let listevetentre = iframeDocument.getElementById('contentPrintRapport'); 
+                 listevetentre.innerHTML = xhr.responseText;
+             }; 
+             iframe.src = 'printRapport.php'; // Actualise l'iframe en réassignant sa source    
+            
+            
+    }}
+    xhr.open('GET','affichContratEmploye.php?idcompte='+idcompte);
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhr.send();
+
+}
 // affiche le corps de la fiche de paie d'un employé
 function affichBodyPaieEmploye(){
     btnClick();
@@ -3758,5 +4048,37 @@ function affichOperationEffectuees(){
     xhr.open('GET','affichOperationEffectuees.php?datefin='+datefin+'&datedebut='+datedebut);
     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xhr.send();
+
+}
+
+// modification du mot de passe
+function updatePassword(){
+    btnClick();
+    var AncienPasse = document.getElementById('AncienPasse').value; 
+    var newPass     = document.getElementById('newPass').value; 
+    var confirmPass = document.getElementById('confirmPass').value; 
+    let cookie      = localStorage.getItem('login');
+
+    if(window.XMLHttpRequest){
+        //Mozilla, safari, IE7+...
+        xhr = new XMLHttpRequest();
+    }else if(window.ActiveXObject){
+        //IE 6 et anterieur
+        xhr = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xhr.onreadystatechange = function (){
+        if(xhr.readyState == 4 && xhr.status == 200){
+            document.getElementById('resultupdatepassword').innerHTML = xhr.responseText;
+
+    }}
+    var form = new FormData();
+    form.append('AncienPasse', AncienPasse);
+    form.append('newPass', newPass);
+    form.append('confirmPass', confirmPass);
+    form.append('cookie', cookie);
+
+    xhr.open('POST','updatePassword.php');
+    //xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhr.send(form);
 
 }

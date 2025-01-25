@@ -94,7 +94,7 @@ if($sel = $connec -> query($se)){
                  while($chere=$cher->fetch()){
                      $typ=$chere['typecompte'];
                      if($typ==='admin'){
-                         $in="INSERT INTO comptes values('','$nom','$telephone','$login','$mdp','$typenewuser','Activer','$datecreer','$PressingRattacher','$datenaissuser','$CNIuser','$pereuser','$mereuser','$diplomeuser','$nationaliteuser','$typeContrat','$daterecrute','$obligation','$poste','$salaire')";
+                         $in="INSERT INTO comptes values('','$nom','$telephone','$login','$mdp','$typenewuser','activer','$datecreer','$PressingRattacher','$datenaissuser','$CNIuser','$pereuser','$mereuser','$diplomeuser','$nationaliteuser','$typeContrat','$daterecrute','$obligation','$poste','$salaire','')";
                           if($insert=$connec->exec($in)){
                             echo '<div class="alert alert-success" role="alert" style="font-size:12px">Nouveau compte enregistré</div>';
                             $in ="INSERT INTO operationseffectuees VALUES('','$datetime','$nomuser','Utilisateur','Insertion','nom:".$nom.", date_naissance:".$datenaissuser.", téléphone:".$telephone.", CNI:".$CNIuser.", nom du pere:".$pereuser .", nom de la mere :".$mereuser.", diplome:".$diplomeuser.", nationalite:".$nationaliteuser .", type contrat:".$typeContrat.", date recruté:".$daterecrute.", login:".$login .", mot de passe :*******, type de compte:".$typenewuser.", poste:".$poste.", salaire:".$salaire.", obligation:".$obligation."','$PressingRattacher')";

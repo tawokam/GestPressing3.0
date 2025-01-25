@@ -10,8 +10,8 @@
     display: none;
 }
 body{
-margin: 0%;
-padding: 0%;
+margin: 0px;
+padding: 0px;
 overflow: hidden;
 background:rgb(255, 255, 255);
 }#nomlogic{
@@ -26,7 +26,7 @@ background:rgb(255, 255, 255);
     height: 100vh;
     margin: 0%;
     padding: 0%;
-    border-collapse: collapse;
+    border-collapse: collapse;top: 0px;
 }#menugauche{
     background:#9da4e5cc;color: black;
     width: 250px;
@@ -75,7 +75,7 @@ background:rgb(255, 255, 255);
         border: 0px;
         justify-content: space-around;
         align-items: center;
-        display: flex;
+        display: flex; 
     }#tabconex{
         background: white;
         width: 500px;
@@ -125,7 +125,7 @@ background:rgb(255, 255, 255);
     }
     #imgmdp{
         vertical-align: middle;
-    }#formnewcompt,#blockpersonnel,#blockFichAllpersonnel{
+    }#formnewcompt,#blockpersonnel,#blockFichAllpersonnel,#formmodifpassword{
         width: 50%;
         background: white;
         box-shadow: 0.5px 0.5px 10px 10px rgba(128, 128, 128, 0.096);
@@ -134,7 +134,8 @@ background:rgb(255, 255, 255);
         position:fixed;
         top: 5%;
         z-index: 100;
-    }#formmodifdep,#formmodifclotcaisse,#formnewclient,#formnewtypvet,#formnewtypdep,#formnewdep,#formnewcarte,#formrecharcarte,#formnewtypver,#formnewverse,#smsvetsortnow, #smsretraitDepasse, #formnsendsmsCl{
+    }#formmodifpassword{width: 30%;}
+    #formmodifdep,#formmodifclotcaisse,#formnewclient,#formnewtypvet,#formnewtypdep,#formnewdep,#formnewcarte,#formrecharcarte,#formnewtypver,#formnewverse,#smsvetsortnow, #smsretraitDepasse, #formnsendsmsCl,#formnewretourvet{
         position:fixed;
         width: 30%;
         background: white;
@@ -348,7 +349,7 @@ background:rgb(255, 255, 255);
         display: block;  
         
     }
-    #rapportlistverse,#rapportlistcartef,#rapportlistcloturcaus,#rapportlistvetdepot,#rapportlistvetsort,#rapportlistdepense,#rapportlistfacture,#rapportlistdett,#rapportlistargantcli,#rapportlistargantvet{
+    #rapportlistverse,#rapportlistcartef,#rapportlistcloturcaus,#rapportlistvetdepot,#rapportlistvetsort,#rapportlistdepense,#rapportlistfacture,#rapportlistdett,#rapportlistargantcli,#rapportlistargantvet,#rapportlistvetback{
         width: 100%;
         text-align: center;
         display:none;color: rgba(128, 128, 128, 0.356);
@@ -372,7 +373,7 @@ background:rgb(255, 255, 255);
         margin: auto;
         margin-top: 2%;
     }
-    #sortievet,#regledett,#blockclokcaisse,#affichtypevet{
+    #sortievet,#regledett,#blockclokcaisse,#affichtypevet,#dispovet{
         width: 50%;
         margin: auto;
         text-align: center;
@@ -455,7 +456,7 @@ background:rgb(255, 255, 255);
         width: 100%;
         height: 80vh;
         overflow: auto;
-    }#zonegraphdashbord,#listestock,#listeversearapport,#listeversea,#listevetentre,#listecloturecais,#listevetsort,#listedepenserap,#listefacturerap,#listecartefrap,#listedetterap,#listechiffrecl,#listechiffrevet{
+    }#zonegraphdashbord,#listestock,#listeversearapport,#listeversea,#listevetentre,#listecloturecais,#listevetsort,#listedepenserap,#listefacturerap,#listecartefrap,#listedetterap,#listechiffrecl,#listechiffrevet,#listevetback{
         width: 100%;
         height: 95vh;
         overflow: auto;
@@ -473,7 +474,7 @@ background:rgb(255, 255, 255);
         width: 250px;
         display: none;
     }
-    #affichvet,#affichvetsort,#affichfactdet,#listetypevet{
+    #affichvet,#affichvetsort,#affichfactdet,#listetypevet,#affichvetdispo{
         vertical-align: top;
         border: 1px solid gray;
         width: 100%;
@@ -572,7 +573,7 @@ background:rgb(255, 255, 255);
         color: blue;
         font-style: italic;
         font-weight: bold;
-    }#choixclcart, #choixclsms{
+    }#choixclcart, #choixclsms,#choixvetFactRetour{
         height: 30vh;
         overflow: auto;
         border: 1px solid gray;
@@ -747,6 +748,12 @@ cursor: pointer;
 
 /*--------------------------------*/
 /*--- Travail sur le responsive des formulaire en position fixed ---*/
+@media(max-width: 1200px){
+    #blockpersonnel{
+        width: 70%;
+        left: 100px;
+    }
+}
 @media (max-width: 992px) {
 #formmodifdepot,#formrecharcarte,#formnewcarte,#formmodiftypversem,#formmodifversem,#formnewtypver,#formnewverse,#formnewcompt,#formnewclient,#formmodifclient,#formmodiftypvet,#formnewtypdep,#formnewdep,#formmodiftypdep,#formmodifdep,#formnsendsmsCl,#blockpersonnel,#blockFichAllpersonnel {
       width: 70%;
@@ -773,6 +780,16 @@ cursor: pointer;
         width: 60%;
         left:10%;
     }
-
+    #formmodifdep,#formmodifclotcaisse,#formnewclient,#formnewtypvet,#formnewtypdep,#formnewdep,#formnewcarte,#formrecharcarte,#formnewtypver,#formnewverse,#smsvetsortnow, #smsretraitDepasse, #formnsendsmsCl,#formnewretourvet{
+        position:fixed;
+        width: 50%;
+        left: calc((50%)/4);
+        background: white;
+        box-shadow: 0.5px 0.5px 10px 10px rgba(128, 128, 128, 0.096);
+        padding: 0px 7px 4px 7px;
+        display: none;
+        top: 5%;
+        z-index: 100;
+    }
     
   }

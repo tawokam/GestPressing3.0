@@ -1,6 +1,6 @@
 
 <?php
-    require_once('connect.php');
+    require('connect.php');
     // récuperation de l'agence en local
 
     $ag = "SELECT id_agence,nom FROM agence ";
