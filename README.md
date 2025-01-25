@@ -63,6 +63,7 @@ Afin que l'application accède à la base de données en ligne, trois fichiers d
 Ouvrez le projet dans un navigateur en entrant l'adresse 127.0.0.1 ou localhost, qui est l'adresse locale permettant d'accéder à votre serveur local.
 Sélectionnez le dossier gestpressing3 et l'application s'ouvrira et vous invitera à vous connecter.
 Un utilisateur ayant le statut d'administrateur est créé par défaut. Vous pouvez l'utiliser pour vous connecter. Après connexion, créez votre compte avec un statut administrateur et désactivez l'admin par défaut (afin qu'une tierce personne ne puisse l'utiliser pour accéder frauduleusement à votre application).
+
 Utilisateur par défaut
 Login : Technosoft
 Mot de passe : version3
@@ -72,7 +73,7 @@ Vous avez la possibilité d'installer l'application directement depuis le naviga
 Vous avez désormais un accès total à votre application Gestpressing afin de gérer votre pressing où que vous soyez.
 
 SI VOUS RENCONTREZ DES PROBLÈMES, VEUILLEZ CONTACTER LE SERVICE TECHNIQUE AFIN DE BÉNÉFICIER D'UNE ASSISTANCE :
-Assistance
+
 Téléphone et WhatsApp : +237 699388115 / +237 672222260
 Email : achilletawokam@gmail.com
 
