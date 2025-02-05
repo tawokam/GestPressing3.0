@@ -52,7 +52,43 @@ try {
             $phoneCl  = $clien['telephone_cl'];
             
             $message = "Chère client(e) vos vetements portant le numéro de facture ".$codefact." sont disponibles.Avance:".$avance.",Reste:".$reste.".Contacter le ".$Phoneagence." (".$Nomagence.") pour plus d'informations";
-            sendBulkSms($phoneCl, $message);
+            $Result = sendBulkSms($phoneCl, $message);
+            if (is_array($Result) && isset($Result['status']) && $Result['status'] == 'pending') {
+                echo 1; // le message a bien été envoyé
+                $in = "INSERT INTO message VALUES('','$message','$phoneCl','$idClient','$agence','$cookie')";
+                if($ins = $connec -> exec($in)){}else{throw new Exception();}
+            } else {
+                // il ya eu un probleme lors de l'envoi du SMS
+                function insertIntoNosendsms($connec, $idClient, $phoneCl, $message, $agence, $facture) {
+                    try {
+                        // Vérifiez l'existence de la table
+                        $tableExists = $connec->query("SHOW TABLES LIKE 'nosendsms'")->rowCount() > 0;
+                
+                        if ($tableExists) {
+                            // Insérez les données dans la table
+                            $in = "INSERT INTO nosendsms VALUES ('', :idClient, :phoneCl, :message,:facture, :agence)";
+                            $stmt = $connec->prepare($in);
+                            $stmt->bindParam(':idClient', $idClient);
+                            $stmt->bindParam(':phoneCl', $phoneCl);
+                            $stmt->bindParam(':message', $message);
+                            $stmt->bindParam(':agence', $agence);
+                            $stmt->bindParam(':facture', $facture);
+                
+                            if ($stmt->execute()) {
+                                echo "Données insérées avec succès !";
+                            } else {
+                                echo "Erreur lors de l'insertion des données.";
+                            }
+                        } else {
+                            echo "La table 'nosendsms' n'existe pas.";
+                        }
+                    } catch (Exception $ex) {
+                        echo 'Exception : ' . $ex->getMessage();
+                    }
+                }
+                insertIntoNosendsms($connec, $idClient, $phoneCl, $message, $agence, $codefact);
+                
+            }
         }
     }
 

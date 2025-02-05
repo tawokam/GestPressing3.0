@@ -23,7 +23,7 @@ if(isset($_COOKIE["typecompte"]))
 else
 {
     // verifions si la machine est connecté : si oui connexion recupere les pressing en ligne dans le cas contraire les pressing local
-    function isConnected() 
+     function isConnected() 
     {  
         $ch = curl_init();  
         curl_setopt($ch, CURLOPT_URL, "http://www.google.com");  
@@ -34,6 +34,7 @@ else
         
         return $result !== false;  
     }  
+
     
     $result = isConnected();
     if ($result) 
@@ -56,6 +57,12 @@ else
     } 
        
 }
+
+// Supprime les caractères spéciaux de la sortie
+ob_start();
+$output = ob_get_clean();
+$output = str_replace("&#xFFFF;", "", $output);
+$output = str_replace("&#xFEFF; ", "", $output);
 
 
 ?>

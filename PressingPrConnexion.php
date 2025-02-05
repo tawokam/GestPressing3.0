@@ -3,7 +3,7 @@
     require('connect.php');
     // récuperation de l'agence en local
 
-    $ag = "SELECT id_agence,nom FROM agence ";
+    $ag = "SELECT id_agence,nom FROM agence";
     if($age = $connec -> query($ag)){
         while($agen = $age -> fetch()){
             $agence = $agen['id_agence'];

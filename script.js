@@ -119,6 +119,8 @@ function deconnexions(){
     // drop cookie
     // Définir la date d'expiration à une date passée pour supprimer le cookie
     document.cookie = "typecompte=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    document.cookie = "adminLocal=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+
     window.location.href = 'index.php';
     //window.close();
 }
@@ -376,8 +378,8 @@ function acces (){
     if(tex !== null){
         blockconnexion.setAttribute("style","display:none");
     }else if(tex === null){
-        blockconnexion.setAttribute("style","display:block");
-    
+        blockconnexion.setAttribute("style","display:block"); 
+/*         PressingPrConnexion();   */
     }
 }
 
@@ -929,7 +931,6 @@ function valideDispoVet(){
     xhr.onreadystatechange = function (){
     if(xhr.readyState == 4 && xhr.status == 200){
          const result = xhr.responseText;
-         alert(result);
          etatfactureDispo();
          
     }
@@ -1094,6 +1095,7 @@ xhr.send();
 //verification de l'etat de la facture(disponible ou non disponible)
 function etatfactureDispo(){
     let codefactsort = document.getElementById('codefactdispo').value;
+    var btnDispo     = document.getElementById('btnvalidDispo')
     if(window.XMLHttpRequest){
         //Mozilla, safari, IE7+...
         xhr = new XMLHttpRequest();
@@ -1105,7 +1107,13 @@ function etatfactureDispo(){
     xhr.onreadystatechange = function (){
     if(xhr.readyState == 4 && xhr.status == 200){
         let etatFctDR = document.getElementById('etatFctDRDispo');
-        etatFctDR.innerHTML=xhr.responseText;
+        const Result = xhr.responseText; 
+        etatFctDR.innerHTML = Result
+        if(Result == '<div style="color:red">Vetements non disponible</div>'){
+            btnDispo.style.visibility = 'visible';
+        }else{
+            btnDispo.style.visibility = 'hidden';
+        }
         affichresteApayerDispo();
 
     }
@@ -3734,6 +3742,7 @@ function afficheMessageSend(){
 }
 
 function synchronisation(){
+    let cookie = localStorage.getItem('login');
     if(window.XMLHttpRequest){
         //Mozilla, safari, IE7+...
         xhr = new XMLHttpRequest();
@@ -3745,7 +3754,7 @@ function synchronisation(){
         if(xhr.readyState == 4 && xhr.status == 200){
 
     }}
-    xhr.open('GET','synchronisation/synchronisation.php');
+    xhr.open('GET','synchronisation/synchronisation.php?cookie='+encodeURI(cookie));
     xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xhr.send();
 

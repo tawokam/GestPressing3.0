@@ -24,10 +24,8 @@
     $mtp          = "";
     $conneconline = new PDO("$server;dbname=$bd","$util","$mtp");
     
-    $conneclocal  -> beginTransaction();
-    $conneconline -> beginTransaction();
-try {
-  
+    $datetime = date('Y/m/d h:i:s');
+    $cookie   = $_GET['cookie'];
     // récuperation de l'agence en local
     $ag = "SELECT id_agence FROM agence WHERE statut = 'activer'";
     if($age = $conneclocal -> query($ag)){
@@ -35,6 +33,71 @@ try {
             $agence = $agen['id_agence'];
         }
     }
+
+    
+    // ENVOI DES SMS NON ENVOYES
+    /* --------------------------------------------------------------------------------------------------------
+    - les messages non envoyé et stocker dans une table sont a achaque synchronisation reenvoyé : si l'envoi  -
+    -  est un succès, le message est suprrimer dans la table dans le cas contraire.                           -
+    - un autre essaie d'envoi est lancé apres la prochaine synchronisation.                                   -
+    - cette action est executer jusqu'a ce que tous les messages sont envoyés avec succès                     -
+    --------------------------------------------------------------------------------------------------------- */
+
+    require('../sendMessage.php');
+    $se = "SELECT * from nosendsms WHERE agence='$agence'";
+    if($sel =$conneclocal -> query($se)){
+        while($sele = $sel -> fetch()){
+            $pho     = $sele['phoneClient'];
+            $sm      = $sele['message'];
+            $ligne   = $sele['ligne'];
+            $idcl    = $sele['client'];
+            $facture = $sele['facture'];
+            
+            $scl = "SELECT nom_cl FROM client WHERE id_client='$idcl' AND agence='$agence'";
+            if($dcli = $conneclocal -> query($scl)){
+                while($sclie = $dcli -> fetch()){
+                    $nomcl = $sclie['nom_cl'];
+                }
+            }
+
+            $se = "SELECT nom_user FROM comptes WHERE login_user='$cookie'";
+            if($sel = $conneclocal -> query($se)){
+                while ($sele = $sel -> fetch()) {
+                    $nomuser = $sele['nom_user'];
+                }
+            }
+            
+            // verifions si le vetement est encore au pressing (si oui envoyer le message si non supprimer le message)
+            $ve = "SELECT id_depot FROM depotvetement WHERE code='$facture' AND agence='$agence'";
+            if($ver = $conneclocal -> query($ve)){
+                $bre = $ver -> rowCount();
+                if($bre == 0 ){
+                    // suppression du message car le vetement a deja ete retirer
+                    $de = "DELETE FROM nosendsms WHERE ligne='$ligne'";
+                    if($del = $conneclocal -> query($de)){}else{throw new Exception();}
+                }else{
+                    // envoi du message car le vetement est toujours au pressing
+                    $Result = sendBulkSms($pho, $sm);
+                    if (is_array($Result) && isset($Result['status']) && $Result['status'] == 'pending') {
+                        // le message a bien été envoyé
+                        $de = "DELETE FROM nosendsms WHERE ligne='$ligne'";
+                        if($del = $conneclocal -> query($de)){}else{throw new Exception();}
+                        $in ="INSERT INTO operationseffectuees VALUES('','$datetime','$nomuser','Message','Envoi de message','Envoi d\'un sms a :".$nomcl.", message:".$sm."','$agence')";
+                        if($ins = $conneclocal -> exec($in)){}else{throw new Exception();}  
+                    } else {/* message non envoyé(accune action necessaire)*/}
+                }
+            }
+            
+        }
+    }
+
+
+
+    $conneclocal  -> beginTransaction();
+    $conneconline -> beginTransaction();
+try {
+  
+    
 
     // Gestion des comptes utilisateur
     /* Après la creation d'un compte utilisateur(par l'administrateur), l'employer dois ce connecter pour la premier fois depuis la 
@@ -123,26 +186,26 @@ try {
     //tableau contenant toutes les tables dont les données vont etre extrait
     $tables = array(
        // array('cartefidelite','id_carte'),
-        array('client','id_client'),
-        array('cloturecaisse','id_clot'),
-        array('commande','id_cmd'),
+        array('client', 'id_client'),
+        array('cloturecaisse', 'id_clot'),
+        array('commande', 'id_cmd'),
        // array('comptes','id_compte'),
-        array('depense','id_depense'),
-        array('depotvetement','id_depot'),
-        array('facture','id_facture'),
-        array('facturesupprimer','id_factsupp'),
-        array('gestse','id_ligne'),
+        array('depense', 'id_depense'),
+        array('depotvetement', 'id_depot'),
+        array('facture', 'id_facture'),
+        array('facturesupprimer', 'id_factsupp'),
+        array('gestse', 'id_ligne'),
       //  array('rechargecf','id_rech'),
-        array('reglement','id_reg'),
-        array('sortivetement','id_sort'),
-        array('typedepense','id_dep'),
-        array('typeverseargent','id_typevera'),
-        array('typevetement','id_typevet'),
-        array('verseargent','id_vera'),
-        array('versement','id_verse'),
-        array('message','ligne'),
-        array('dispovetement','id_depot'),
-        array('backvetement','ligne')
+        array('reglement', 'id_reg'),
+        array('sortivetement', 'id_sort'),
+        array('typedepense', 'id_dep'),
+        array('typeverseargent', 'id_typevera'),
+        array('typevetement', 'id_typevet'),
+        array('verseargent', 'id_vera'),
+        array('versement', 'id_verse'),
+        array('message', 'ligne'),
+        array('dispovetement', 'id_depot'),
+        array('backvetement', 'ligne')
     );
 
     for($i = 0; $i < count($tables);$i++)

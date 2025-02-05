@@ -1,7 +1,7 @@
 <?php
-
+    require('connect.php');
 try {
-    require('connectConnexion.php');
+    $connec -> beginTransaction();
     require('sendMessage.php');
     $now = date('Y/m/d');
     $msg = $_POST['msgallnow'];
@@ -38,20 +38,64 @@ try {
         while($sele=$sel->fetch()){
             $ph = $sele['telephone_cl'];
             $idcl = $sele['id_client']; 
-            $phone = '+237'.$sele['telephone_cl'];
+            $phone = $sele['telephone_cl'];
             
-            $in = "INSERT INTO message VALUES('','$msg','$ph','$idcl','$pressing','$cookie')";
-            if($ins = $connec -> exec($in)){sendBulkSms($phone, $msg);}else{ throw new Exception();}
+
+
+                $Result = sendBulkSms($phone, $msg);
+                if (is_array($Result) && isset($Result['status']) && $Result['status'] == 'pending') {
+                    // le message a bien été envoyé
+                    $in = "INSERT INTO message VALUES('','$msg','$ph','$idcl','$pressing','$cookie')";
+                    if($ins = $connec -> exec($in)){}else{throw new Exception();}
+                    $in ="INSERT INTO operationseffectuees VALUES('','$datetime','$nomuser','Message','Envoi de message en masse','Envoi aux clients pour informé que la date de retrait est depassé, sms:".$msg."','$pressing')";
+                    if($ins = $connec -> exec($in)){}else{throw new Exception();}
+                } else {
+                    // il ya eu un probleme lors de l'envoi du SMS
+                    function insertIntoNosendsms($connec, $idClient, $phoneCl, $message, $agence, $facture) {
+                        try {
+                            // Vérifiez l'existence de la table
+                            $tableExists = $connec->query("SHOW TABLES LIKE 'nosendsms'")->rowCount() > 0;
+                    
+                            if ($tableExists) {
+                                // Insérez les données dans la table
+                                $in = "INSERT INTO nosendsms VALUES ('', :idClient, :phoneCl, :message, :facture, :agence)";
+                                $stmt = $connec->prepare($in);
+                                $stmt->bindParam(':idClient', $idClient);
+                                $stmt->bindParam(':phoneCl', $phoneCl);
+                                $stmt->bindParam(':message', $message);
+                                $stmt->bindParam(':agence', $agence);
+                                $stmt->bindParam(':facture', $facture);
+                    
+                                if ($stmt->execute()) {
+                                   // echo "Données insérées avec succès !";
+                                } else {
+                                   // echo "Erreur lors de l'insertion des données.";
+                                }
+                            } else {
+                               // echo "La table 'nosendsms' n'existe pas.";
+                            }
+                        } catch (Exception $ex) {
+                            throw new Exception();
+                        }
+                    }
+                    insertIntoNosendsms($connec, $idcl, $phone, $msg, $pressing, 0);
+                }
+
+            
         }
     }
-    $in ="INSERT INTO operationseffectuees VALUES('','$datetime','$nomuser','Message','Envoi de message en masse','Envoi aux clients pour informé que la date de retrait est depassé, sms:".$msg."','$pressing')";
-    if($ins = $connec -> exec($in)){}  
-    echo '<br/><div class="alert alert-secondary bg-success text-light" role="alert" style="font-size:12px">
-        Messages envoyés
-    </div>';
+    
+
 }
+$connec -> commit();
+echo '<br/><div class="alert alert-secondary bg-success text-light" role="alert" style="font-size:12px">
+Messages envoyés
+</div>';
 }  catch (Exception $ex) {
-    echo 'Error ';
+    $connec -> rollback();
+    echo '<br/><div class="alert alert-danger bg-danger text-light" role="alert" style="font-size:12px">
+        Erreur lors du traitement des données
+    </div>';
  }
 
 

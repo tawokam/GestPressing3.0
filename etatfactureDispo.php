@@ -17,10 +17,10 @@ if($req=$connec->query($re)){
        $nbre=$reqe['nbre'];
        if($codefact==''){}
        else if($nbre<1){
-           echo '<div style="color:red">Vetements non disponible</div>';
+           echo '<div style="color:red">Vetements non disponible</div>'; // si le message de retour est modifier la fonction js etatfactureDispo doit etre modifiée
        }else if($nbre>=1){
         
-           echo '<div style="color:green">Vetements disponible</div>';
+           echo '<div style="color:green">Vetements disponible</div>';  // si le message de retour est modifier la fonction js etatfactureDispo doit etre modifiée
    }
 }
 }

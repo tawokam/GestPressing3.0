@@ -156,6 +156,7 @@ function imprime_blocbg(titre,objet)
 
 //recuperation des information de l'utilisateur connecté
 function infoUserConnect(){ 
+    
     let profilUser  = document.getElementById('profilUser');
     let posteUser   = document.getElementById('posteUser');
     let phoneUser   = document.getElementById('phoneUser');
@@ -175,7 +176,7 @@ function infoUserConnect(){
     if(xhr.readyState == 4 && xhr.status == 200){
         const JSONDATA = JSON.parse(xhr.responseText);
         
-        if (JSONDATA.statut === 200) {
+        if (JSONDATA.statut == 200) {
             posteUser.textContent   = ' : '+JSONDATA.posteUser;
             phoneUser.textContent   = ' : '+JSONDATA.phoneUser;
             nomUser.textContent     = ' : '+JSONDATA.nomUser;
@@ -195,6 +196,7 @@ function infoUserConnect(){
         } else {
             console.log('Erreur:', JSONDATA.Message);
         }
+        
     }
    }
 xhr.open('GET','infoUserConnect.php?cookie='+encodeURI(cookie));
@@ -222,14 +224,14 @@ xhr.send();
         <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
         <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet">
         <link rel="manifest" href="manifest.json">
-        <link rel="icon" type="image/png" href="img/Icon.png"/>
+        <link rel="icon" type="image/png" href="img/Icon.png">
         <link rel="stylesheet" href="style.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>
 
         <script src="./chart.js-3.9.1/package/dist/chart.min.js"></script>
         <script type="text/javascript">
-            function PressingPrConnexion()
+            /* function PressingPrConnexion()
             {
                 if(window.XMLHttpRequest){
                     //Mozilla, safari, IE7+...
@@ -243,12 +245,12 @@ xhr.send();
                     let pressing = document.getElementById('pressingConnect');
                     pressing.innerHTML = xhr.responseText;
                     
-                    infoUserConnect(); 
+                    //infoUserConnect(); 
                 }}
                 xhr.open('GET','PressingPrConnexion.php');
                 xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 xhr.send();
-            }
+            } */
             
             // Fonction pour créer ou modifier un cookie
             function setCookie(name, value, days) 
@@ -275,7 +277,9 @@ xhr.send();
                 }
                 window.location.href="index.php";
 
+
             }
+           
         </script>
 
     </head> 
@@ -303,7 +307,22 @@ xhr.send();
                                 <table style="width: 100%;">
                                     <tr>
                                         <td >
-                                            <select name="" id="pressingConnect" class="form-select"></select><br>
+                                            <select name="" id="pressingConnect" class="form-select">                                         
+                                                <?php
+                                                    require_once('connect.php');
+                                                    // récuperation de l'agence en local
+
+                                                    $ag = "SELECT id_agence,nom FROM agence";
+                                                    if($age = $connec -> query($ag)){
+                                                        while($agen = $age -> fetch()){
+                                                            $agence = $agen['id_agence'];
+                                                            ?>
+                                                            <option value="<?php echo $agen['id_agence']?>"><?php echo $agen['nom']?> </option> 
+                                                            <?php
+                                                        }
+                                                    }
+                                                ?>
+                                            </select><br>
                                         </td>
                                     </tr>
                                     <tr> 
@@ -484,9 +503,9 @@ xhr.send();
                         <button type="button" class="btn btn-success" onclick="document.getElementById('formnsendsmsCl').style.display='block';btnClick()">
                             <i class="bi bi-person-plus"></i> SMS à un client en particulier <br>
                         </button>&nbsp;&nbsp;&nbsp;&nbsp;
-                        <button type="button" class="btn btn-primary" onclick="document.getElementById('smsvetsortnow').style.display='block';btnClick()">
+                        <!-- <button type="button" class="btn btn-primary" onclick="document.getElementById('smsvetsortnow').style.display='block';btnClick()">
                             <i class="bi bi-person-plus"></i> SMS aux client qui recupère <br>leurs vetement aujourd'hui
-                        </button>&nbsp;&nbsp;&nbsp;
+                        </button>&nbsp;&nbsp;&nbsp; -->
                         <button type="button" class="btn btn-danger" onclick="document.getElementById('smsretraitDepasse').style.display='block';btnClick()">
                             <i class="bi bi-person-plus"></i> SMS aux client dont la date de  <br>retrait est dépassé
                         </button>&nbsp;&nbsp;&nbsp;
@@ -1368,7 +1387,7 @@ xhr.send();
                                                            </div> </form><tr><td colspan="3" id="smsFormsort"></td></tr>
                                                             <tr><td colspan="2"><div id="affichvetdispo">Liste des vetements de la facture</div></td></tr>
                                                             <tr><td id="etatFctDRDispo"></td></tr>
-                                                            <tr><td colspan="2" style='font-weight:bold'>Reste a payer:<span id="restedispo">0</span>Fcfa&nbsp;&nbsp;&nbsp;<button class="btn btn-primary" onclick="valideDispoVet()"><i class="bi bi-check-circle text-light"></i> Valider la disponibilitée</button> un SMS est envoyé au client concerné</td></tr>
+                                                            <tr><td colspan="2" style='font-weight:bold'>Reste a payer:<span id="restedispo">0</span>Fcfa&nbsp;&nbsp;&nbsp;<button class="btn btn-primary" onclick="valideDispoVet()" id="btnvalidDispo"><i class="bi bi-check-circle text-light"></i> Valider la disponibilité</button> un SMS est envoyé au client concerné</td></tr>
                                                         </table>
                                                     </div>
                                                 </div>
@@ -1598,8 +1617,9 @@ xhr.send();
             synchronisation(); // pour les test
         }
     }, 5000);//300000
-         
-    PressingPrConnexion();                                            
+    infoUserConnect();      
+     
+    
     </script>
     </body>
 </html>

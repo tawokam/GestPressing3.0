@@ -17,9 +17,9 @@
      }
      echo '</table>';
  }
- echo '<table class="table table-succes table-bordered table-striped table-hover" style="font-size:14px;text-align: center;margin:0 auto;width:95%">
+ echo '<table class="table table-succes table-bordered table-striped table-hover" style="font-size:14px;text-align: center;width:100%;overflow:auto">
 <thead class="table-primary">
- <tr><th>N°</th><th> Nom complèt</th><th>Téléphone</th><th>Née le</th><th>N° CNI</th><th>Diplome</th><th>Nationalité</th><th>Login</th><th>Type de compte</th><th>Pressing</th><th>Statut</th><th colspan="2"> Action</th></tr>
+ <tr><th>N°</th><th> Nom complèt</th><th>Téléphone</th><th>Née le</th><th>N° CNI</th><th>Diplome</th><th>Nationalité</th><th>Login</th><th>Type de compte</th><th>Pressing</th><th>Statut</th><th> Action</th></tr>
  </thead>';
  $n = 1;
 
@@ -37,7 +37,7 @@
             }
         }
          ?>
-         <tr><td><?php echo $n?></td><td style="cursor:pointer" onclick="affichblockGestpersonnel('<?php echo $reqe['id_compte']?>')"><?php echo $reqe['nom_user']?></td><td ><?php echo $reqe['telephone_user']?></td><td ><?php echo $reqe['datenaiss']?></td><td ><?php echo $reqe['CNI']?></td><td ><?php echo $reqe['diplome']?></td><td ><?php echo $reqe['nationalite']?></td><td ><?php echo $reqe['login_user']?></td><td ><?php echo $reqe['typecompte']?></td><td ><?php echo $nomagence?></td><td style="cursor: pointer;"  id="<?php echo $reqe['id_compte']?>" onclick="statutcompt(this.id)"><?php $st = $reqe['statut'];if($st == 'desactiver'){echo '<i class="bi bi-file-lock2 text-danger"></i> ';}else{echo '<i class="bi bi-file-person text-success"></i> ';} ?><?php echo $reqe['statut']?></td><td style='cursor:pointer'><i class="bi bi-pencil-fill text-warning"></i> Modifier</td><td style="cursor:pointer" id="<?php echo $reqe['id_compte']?>" onclick="xy=confirm('Veuillez confimer la suppression du compte de <?php echo $reqe['nom_user'] ?> en cliquant sur le bouton OK');if(xy){suppcompteuser(this.id)}else{}"><i class="bi bi-trash3-fill text-danger"></i> Effacer</td></tr>
+         <tr><td><?php echo $n?></td><td style="cursor:pointer" onclick="affichblockGestpersonnel('<?php echo $reqe['id_compte']?>')"><?php echo $reqe['nom_user']?></td><td ><?php echo $reqe['telephone_user']?></td><td ><?php echo $reqe['datenaiss']?></td><td ><?php echo $reqe['CNI']?></td><td ><?php echo $reqe['diplome']?></td><td ><?php echo $reqe['nationalite']?></td><td ><?php echo $reqe['login_user']?></td><td ><?php echo $reqe['typecompte']?></td><td ><?php echo $nomagence?></td><td style="cursor: pointer;"  id="<?php echo $reqe['id_compte']?>" onclick="statutcompt(this.id)"><?php $st = $reqe['statut'];if($st == 'desactiver'){echo '<i class="bi bi-file-lock2 text-danger"></i> ';}else{echo '<i class="bi bi-file-person text-success"></i> ';} ?><?php echo $reqe['statut']?></td><!-- <td style='cursor:pointer'><i class="bi bi-pencil-fill text-warning"></i> Modifier</td> --><td style="cursor:pointer" id="<?php echo $reqe['id_compte']?>" onclick="xy=confirm('Veuillez confimer la suppression du compte de <?php echo $reqe['nom_user'] ?> en cliquant sur le bouton OK');if(xy){suppcompteuser(this.id)}else{}"><i class="bi bi-trash3-fill text-danger"></i> Effacer</td></tr>
          <?php
          $n++;
      }
