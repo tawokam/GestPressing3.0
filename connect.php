@@ -58,11 +58,4 @@ else
        
 }
 
-// Supprime les caractères spéciaux de la sortie
-ob_start();
-$output = ob_get_clean();
-$output = str_replace("&#xFFFF;", "", $output);
-$output = str_replace("&#xFEFF; ", "", $output);
-
-
 ?>

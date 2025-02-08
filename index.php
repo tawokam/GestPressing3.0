@@ -1,6 +1,5 @@
-<!--travail sur les differentes graphes du tableau de bord-->
 <?php
-
+//travail sur les differentes graphes du tableau de bord-->
 $nowdate = strtotime(date('Y/m/d'));
 $anne    = date("Y", $nowdate);
 require('connect.php');
@@ -294,8 +293,10 @@ xhr.send();
         </div> -->
 
         <!--formulaire de connexion au logiciel-->
-        <div id="blockconnexion">
-            <table id="tabconex" style="display:block;">
+        <div id="blockconnexion" style="display: flex;
+    justify-content: center;
+    align-items: center;">
+            <table id="tabconex" style="display:block;margin:auto">
 
                 <!-- formulaire de connexion-->
                 <tr>
@@ -1614,9 +1615,8 @@ xhr.send();
             synchronisation();
         } else {
             // pas de connexion internet
-            synchronisation(); // pour les test
         }
-    }, 5000);//300000
+    }, 300000);//
     infoUserConnect();      
      
     
